@@ -1,0 +1,7 @@
+{
+    "logOut": "Log out",
+    "deleteAccount": "Delete account",
+    "deleteMessage": "Are you sure you want to permanently delete your account and all associated data?",
+    "confirmDelete": "Confirm deletion",
+    "cancelDelete": "Cancel"
+}

@@ -1,0 +1,8 @@
+{
+    "notEnoughProducts": "Not enough products, maxim $value",
+    "emptyCart": "The cart is empty",
+    "total": "Total",
+    "placeOrder": "Checkout",
+    "priceChanged": "The product price has changed, new price $value",
+    "notEnoughStock": "There is not enough stock, maximum $value"
+}

@@ -1,0 +1,9 @@
+{
+    "description": "Descriere",
+    "quantity": "Cantitate",
+    "addToCard": "Adaugă în coș",
+    "buyNow": "Cumpără acum",
+    "title": "$name $price RON",
+    "batchOf": "Acest produs se poate cumpăra doar în multiplu de $value.",
+    "maxQuantityReached": "Cantitatea maximă a fost atinsă. Nu poți adăuga mai multe articole."
+}

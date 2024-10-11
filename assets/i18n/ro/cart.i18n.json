@@ -1,0 +1,8 @@
+{
+    "notEnoughProducts": "Nu sunt suficient produse, maxim $value",
+    "emptyCart": "Nu ați adăugat nici un produs in coș",
+    "total": "Total",
+    "placeOrder": "Finalizare comandă",
+    "priceChanged": "Pretul produsului s-a schimba, pret nou $value",
+    "notEnoughStock": "Nu este suficent stock, maxim $value"
+}

@@ -1,0 +1,6 @@
+input_directory: assets/i18n
+namespaces: true
+base_locale: ro
+output_file_name: translations.g.dart
+output_format: multiple_files
+output_directory: lib/gen/translations

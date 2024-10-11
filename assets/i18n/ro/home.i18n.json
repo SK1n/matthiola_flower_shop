@@ -1,0 +1,16 @@
+{
+    "category": "Categorie",
+    "threadFlower": "Floare la fir",
+    "potFlower": "Floare la ghiveci",
+    "home": "Acasă",
+    "cart": "Coş",
+    "favorite": "Favorite",
+    "emptyFavorite": "Nu ai adăugat încă produse la favorite.",
+    "profile": "Profil",
+    "search": "Caută...",
+    "lastProducts(cardinal)": {
+        "one": "Ultimele $n bucăți!",
+        "other": "Ultimele $n de bucăți!"
+    },
+    "inStock": "${value} bucăți în stoc."
+}

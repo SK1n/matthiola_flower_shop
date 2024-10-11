@@ -1,0 +1,16 @@
+{
+    "category": "Category",
+    "threadFlower": "Thread Flower",
+    "potFlower": "Potted Flower",
+    "home": "Home",
+    "cart": "Cart",
+    "favorite": "Favorites",
+    "emptyFavorite": "You haven't added any favorite products yet.",
+    "profile": "Profile",
+    "search": "Search...",
+    "lastProducts(cardinal)": {
+        "one": "Last $n pieces!",
+        "other": "Last $n pieces!"
+    },
+    "inStock": "${value} items in stock"
+}

@@ -1,0 +1,9 @@
+{
+    "description": "Description",
+    "quantity": "Quantity",
+    "addToCard": "Add to cart",
+    "buyNow": "Buy now",
+    "title": "$name $price RON",
+    "batchOf": "This product can only be purchased in multiples of $value.",
+    "maxQuantityReached": "Maximum quantity reached. You cannot add more items."
+}

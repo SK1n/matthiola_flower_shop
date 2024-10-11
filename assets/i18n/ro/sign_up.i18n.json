@@ -1,0 +1,20 @@
+{
+    "title": "Crează un cont",
+    "emailLabel": "Introduceți adresa de email",
+    "emailHint": "De exemplu, numeletau@gmail.com",
+    "emailIsValid": "Emailul este valid",
+    "emailFormat": "Format email",
+    "passwordLabel": "Introduceți parola",
+    "passwordShort": "Cel puțin 8 caractere.",
+    "passwordMissingLetter": "Cel puțin 1 literă.",
+    "passwordMissingDigit": "Cel puțin 1 cifră.",
+    "rePasswordLabel": "Introduceți din nou parola",
+    "passwordMismatch": "Parolele nu se potrivesc",
+    "accountCreated": "Cont creat!",
+    "usernameLabel": "Numele florăriei",
+    "required": "Acest câmp este obligatoriu",
+    "createAccount": "Creează cont",
+    "addressLabel": "Adresă",
+    "phoneLabel": "Număr de telefon",
+    "phoneFormat": "Format greșit al numărului de telefon\nAcceptăm următoarele:\n+40213-564-864\n+40213.564.864\n+40213 564 864\n0213-564-864\n0712456789"
+}
