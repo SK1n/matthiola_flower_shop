@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDCvBMX8EjLAFx6chSLDlbkv0DQ2Huaxbk',
-    appId: '1:503409971175:ios:5415eec7d43a61bc7c3742',
+    appId: '1:503409971175:ios:1701a82f7ba532367c3742',
     messagingSenderId: '503409971175',
     projectId: 'matthiola-flower-shop',
     storageBucket: 'matthiola-flower-shop.appspot.com',
-    iosBundleId: 'com.example.matthiolaFlowerShop',
+    iosBundleId: 'com.matthiola.shop',
   );
 
 }
