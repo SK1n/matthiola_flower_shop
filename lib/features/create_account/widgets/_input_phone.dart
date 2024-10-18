@@ -17,27 +17,11 @@ class _InputPhone extends StatelessWidget {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             labelText: t.sign_up.phoneLabel,
-            errorText: _getErrorText(context, state.phone),
+            errorMaxLines: 10,
+            errorText: state.phone.getError,
           ),
         );
       },
     );
-  }
-
-  String? _getErrorText(
-    BuildContext context,
-    FormzInput<dynamic, dynamic> field,
-  ) {
-    if (field.isPure || field.error == null) {
-      return null;
-    }
-
-    switch (field.error) {
-      case PhoneValidationError.required:
-        return context.t.sign_up.required;
-      case PhoneValidationError.invalid:
-        return context.t.sign_up.phoneFormat;
-    }
-    return null;
   }
 }

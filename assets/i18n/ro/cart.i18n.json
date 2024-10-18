@@ -3,6 +3,12 @@
     "emptyCart": "Nu ați adăugat nici un produs in coș",
     "total": "Total",
     "placeOrder": "Finalizare comandă",
-    "priceChanged": "Pretul produsului s-a schimba, pret nou $value",
-    "notEnoughStock": "Nu este suficent stock, maxim $value"
+    "priceChanged": "Prețul produsului s-a schimbat, preț nou $value",
+    "notEnoughStock": "Nu avem suficiente produse, maxim $value",
+    "removeDialog": {
+        "title": "Scoate din coș",
+        "content": "Ești sigur că vrei să scoți acest produs din coș?",
+        "cancel": "Anulează",
+        "remove": "Scoate"
+    }
 }

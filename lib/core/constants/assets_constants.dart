@@ -12,4 +12,6 @@ final class AssetsConstants {
   static String EYE_SLASH_ICON = '${_ICONS}eye_slash'.svg;
 
   static String NOT_FOUND_ANIM = '${_ASSETS}animations/not-found.json';
+
+  static String ADD_TO_CART = '${_ICONS}add_to_cart'.svg;
 }

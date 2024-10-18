@@ -13,32 +13,15 @@ class _InputRePassword extends StatelessWidget {
       builder: (context, state) {
         return TextFormField(
           onChanged: rePasswordChanged,
-          initialValue: state.rePassword.value.value,
+          initialValue: state.password.value.$2,
           obscureText: !state.showPassword,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             labelText: t.sign_up.rePasswordLabel,
-            errorText: _getErrorText(context, state.rePassword),
+            errorText: state.password.getErrorTuple2,
           ),
         );
       },
     );
-  }
-
-  String? _getErrorText(
-    BuildContext context,
-    FormzInput<dynamic, dynamic> field,
-  ) {
-    if (field.isPure || field.error == null) {
-      return null;
-    }
-
-    switch (field.error) {
-      case RePasswordValidationError.required:
-        return context.t.sign_up.required;
-      case RePasswordValidationError.invalid:
-        return context.t.sign_up.passwordMismatch;
-    }
-    return null;
   }
 }

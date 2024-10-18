@@ -1,17 +1,10 @@
 {
-    "title": "Bun venit înapoi",
-    "emailLabel": "Introduceți adresa de email",
-    "emailHint": "De exemplu, numeletau@gmail.com",
-    "emailIsValid": "Emailul este valid",
-    "emailFormat": "Format email",
+    "title": "Bine ați revenit",
+    "emailLabel": "Introduceți adresa dvs. de email",
+    "emailHint": "Ex: numele.tau@gmail.com",
     "emailPrefix": "Email",
-    "passwordLabel": "Introduceți parola",
-    "passwordShort": "Cel puțin 8 caractere.",
-    "passwordPrefix": "Parolă",
-    "passwordMissingLetter": "Cel puțin 1 literă.",
-    "passwordMissingDigit": "Cel puțin 1 cifră.",
+    "passwordLabel": "Introduceți parola dvs.",
     "noAccount": "Nu aveți încă un cont?",
     "register": "Înregistrați-vă",
-    "signIn": "Autentificare",
-    "signInWithGoogle": "Autentificare cu Google"
+    "signIn": "Intră în cont"
 }

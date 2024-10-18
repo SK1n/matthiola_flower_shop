@@ -46,6 +46,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final _TranslationsResetPasswordRo reset_password = _TranslationsResetPasswordRo._(_root);
 	late final _TranslationsSignInRo sign_in = _TranslationsSignInRo._(_root);
 	late final _TranslationsSignUpRo sign_up = _TranslationsSignUpRo._(_root);
+	late final _TranslationsValidatorRo validator = _TranslationsValidatorRo._(_root);
 }
 
 // Path: cart
@@ -59,8 +60,9 @@ class _TranslationsCartRo {
 	String get emptyCart => 'Nu ați adăugat nici un produs in coș';
 	String get total => 'Total';
 	String get placeOrder => 'Finalizare comandă';
-	String priceChanged({required Object value}) => 'Pretul produsului s-a schimba, pret nou ${value}';
-	String notEnoughStock({required Object value}) => 'Nu este suficent stock, maxim ${value}';
+	String priceChanged({required Object value}) => 'Prețul produsului s-a schimbat, preț nou ${value}';
+	String notEnoughStock({required Object value}) => 'Nu avem suficiente produse, maxim ${value}';
+	late final _TranslationsCartRemoveDialogRo removeDialog = _TranslationsCartRemoveDialogRo._(_root);
 }
 
 // Path: checkout
@@ -176,6 +178,8 @@ class _TranslationsHomeRo {
 		other: 'Ultimele ${n} de bucăți!',
 	);
 	String inStock({required Object value}) => '${value} bucăți în stoc.';
+	String get cantRefreshNow => 'Lista nu poate fi reîmprospătată acum. Încercați din nou în scurt timp.';
+	String get welcomeBack => 'Bine ați revenit,';
 }
 
 // Path: profile
@@ -214,21 +218,14 @@ class _TranslationsSignInRo {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get title => 'Bun venit înapoi';
-	String get emailLabel => 'Introduceți adresa de email';
-	String get emailHint => 'De exemplu, numeletau@gmail.com';
-	String get emailIsValid => 'Emailul este valid';
-	String get emailFormat => 'Format email';
+	String get title => 'Bine ați revenit';
+	String get emailLabel => 'Introduceți adresa dvs. de email';
+	String get emailHint => 'Ex: numele.tau@gmail.com';
 	String get emailPrefix => 'Email';
-	String get passwordLabel => 'Introduceți parola';
-	String get passwordShort => 'Cel puțin 8 caractere.';
-	String get passwordPrefix => 'Parolă';
-	String get passwordMissingLetter => 'Cel puțin 1 literă.';
-	String get passwordMissingDigit => 'Cel puțin 1 cifră.';
+	String get passwordLabel => 'Introduceți parola dvs.';
 	String get noAccount => 'Nu aveți încă un cont?';
 	String get register => 'Înregistrați-vă';
-	String get signIn => 'Autentificare';
-	String get signInWithGoogle => 'Autentificare cu Google';
+	String get signIn => 'Intră în cont';
 }
 
 // Path: sign_up
@@ -241,19 +238,40 @@ class _TranslationsSignUpRo {
 	String get title => 'Crează un cont';
 	String get emailLabel => 'Introduceți adresa de email';
 	String get emailHint => 'De exemplu, numeletau@gmail.com';
-	String get emailIsValid => 'Emailul este valid';
-	String get emailFormat => 'Format email';
 	String get passwordLabel => 'Introduceți parola';
-	String get passwordShort => 'Cel puțin 8 caractere.';
-	String get passwordMissingLetter => 'Cel puțin 1 literă.';
-	String get passwordMissingDigit => 'Cel puțin 1 cifră.';
 	String get rePasswordLabel => 'Introduceți din nou parola';
-	String get passwordMismatch => 'Parolele nu se potrivesc';
 	String get accountCreated => 'Cont creat!';
 	String get usernameLabel => 'Numele florăriei';
-	String get required => 'Acest câmp este obligatoriu';
 	String get createAccount => 'Creează cont';
 	String get addressLabel => 'Adresă';
 	String get phoneLabel => 'Număr de telefon';
-	String get phoneFormat => 'Format greșit al numărului de telefon\nAcceptăm următoarele:\n+40213-564-864\n+40213.564.864\n+40213 564 864\n0213-564-864\n0712456789';
+}
+
+// Path: validator
+class _TranslationsValidatorRo {
+	_TranslationsValidatorRo._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get passwordShort => 'Parola trebuie să aibă cel puțin 8 caractere.';
+	String get passwordMissingLetter => 'Parola trebuie să conțină cel puțin o literă.';
+	String get passwordMissingDigit => 'Parola trebuie să conțină cel puțin un număr.';
+	String get passwordMismatch => 'Parolele nu se potrivesc. Vă rugăm să verificați că sunt identice.';
+	String get required => 'Acest câmp nu poate fi lăsat necompletat.';
+	String get invalidEmail => 'Vă rugăm să introduceți o adresă de email validă.';
+	String get phoneFormat => 'Vă rugăm să introduceți un număr de telefon valid. Formate acceptate:\n+40213-564-864\n+40213.564.864\n+40213 564 864\n0213-564-864\n0712456789';
+}
+
+// Path: cart.removeDialog
+class _TranslationsCartRemoveDialogRo {
+	_TranslationsCartRemoveDialogRo._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Scoate din coș';
+	String get content => 'Ești sigur că vrei să scoți acest produs din coș?';
+	String get cancel => 'Anulează';
+	String get remove => 'Scoate';
 }

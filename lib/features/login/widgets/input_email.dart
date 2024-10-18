@@ -18,27 +18,10 @@ class _InputEmail extends StatelessWidget {
           decoration: InputDecoration(
             labelText: context.t.sign_in.emailLabel,
             border: const OutlineInputBorder(),
-            errorText: _getErrorText(context, state.email),
+            errorText: state.email.getError,
           ),
         );
       },
     );
-  }
-
-  String? _getErrorText(
-    BuildContext context,
-    FormzInput<dynamic, dynamic> field,
-  ) {
-    if (field.isPure || field.error == null) {
-      return null;
-    }
-
-    switch (field.error) {
-      case EmailValidationError.required:
-        return context.t.generic.required;
-      case EmailValidationError.invalid:
-        return context.t.sign_in.emailFormat;
-    }
-    return null;
   }
 }

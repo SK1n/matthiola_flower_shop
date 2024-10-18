@@ -1,23 +1,27 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:matthiola_flower_shop/core/di/di.dart';
+import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/extensions/build_context_extension.dart';
-import 'package:matthiola_flower_shop/core/validators/email_validator.dart';
-import 'package:matthiola_flower_shop/core/validators/phone_validator.dart';
-import 'package:matthiola_flower_shop/core/validators/required_validator.dart';
+import 'package:matthiola_flower_shop/core/utils/extensions/input_extension.dart';
+import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
+import 'package:matthiola_flower_shop/domain/models/cart/cart_entity.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/bloc/cart_bloc.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/cubit/cart_form_cubit.dart';
 import 'package:matthiola_flower_shop/features/cart/widgets/cart_item.dart';
 import 'package:matthiola_flower_shop/features/cart/widgets/empty_cart.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:matthiola_flower_shop/widgets/loading_widget.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part '../widgets/input_address.dart';
 part '../widgets/input_email.dart';
 part '../widgets/input_phone.dart';
 part '../widgets/input_username.dart';
+part 'listener.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -28,9 +32,12 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8),
-              child: Icon(Icons.shopping_bag),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Icon(
+                Icons.shopping_bag,
+                color: context.colorScheme.primary,
+              ),
             ),
             Text(context.t.home.cart),
           ],
@@ -38,7 +45,8 @@ class CartScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: BlocBuilder<CartBloc, CartState>(
+          child: BlocSideEffectConsumer<CartBloc, CartState, BaseCommand>(
+            sideEffectListener: _sideEffectListener,
             builder: (context, state) {
               if (state.isLoading) return const LoadingWidget();
               if (state.items.isEmpty) return const EmptyCart();

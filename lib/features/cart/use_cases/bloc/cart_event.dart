@@ -7,6 +7,10 @@ class CartEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class _SubscribeToUser extends CartEvent {
+  const _SubscribeToUser();
+}
+
 class AddToCart extends CartEvent {
   const AddToCart(this.item, {this.showDialog = true});
   final CartEntity item;
@@ -20,6 +24,13 @@ class RemoveFromCart extends CartEvent {
   const RemoveFromCart(this.item);
   final CartEntity item;
 
+  @override
+  List<Object> get props => [item];
+}
+
+class RecyclePressed extends CartEvent {
+  const RecyclePressed(this.item);
+  final CartEntity item;
   @override
   List<Object> get props => [item];
 }

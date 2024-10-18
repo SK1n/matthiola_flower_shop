@@ -14,18 +14,18 @@ import 'package:matthiola_flower_shop/features/cart/use_cases/cubit/cart_form_cu
 import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
 import 'package:matthiola_flower_shop/features/home_scaffold/use_cases/home_scaffold_bloc.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
 
 class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
   CartBloc(
-    this.repository,
-    this.form,
-    this.orderRepository,
-    this.homeBloc,
-    this.homeScaffoldBloc,
+    this._repository,
+    this._form,
+    this._orderRepository,
+    this._homeBloc,
+    this._homeScaffoldBloc,
   ) : super(const CartState()) {
     on<AddToCart>(_onAddToCart);
     on<RemoveFromCart>(_onRemoveFromCart);
@@ -35,20 +35,24 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
     on<ClearCartEvent>(_onClearCartEvent);
     on<CartHasErrorEvent>(_onCartHasErrorEvent);
     on<SubmitCartEvent>(_onSubmitCartEvent);
+    on<RecyclePressed>(_onRecyclePressed);
+    on<_SubscribeToUser>(_onSubscribeToUser);
+    add(const _SubscribeToUser());
     add(const _InitialEvent());
   }
 
-  final ISharedPrefsRepository repository;
-  final CartFormCubit form;
-  final IRepository<OrderRequest> orderRepository;
-  final HomeBloc homeBloc;
-  final HomeScaffoldBloc homeScaffoldBloc;
+  final ISharedPrefsRepository _repository;
+  final CartFormCubit _form;
+  final IRepository<OrderRequest> _orderRepository;
+  final HomeBloc _homeBloc;
+  final HomeScaffoldBloc _homeScaffoldBloc;
 
   void _onInitialEvent(
     _InitialEvent event,
     Emitter<CartState> emit,
   ) {
-    final result = repository.readMapList(SharedPrefsConstants.CART_KEY);
+    final uid = _homeBloc.state.user.uid;
+    final result = _repository.readMapList(SharedPrefsConstants.CART_KEY(uid));
     if (result.isError()) {
       return;
     }
@@ -56,6 +60,15 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
     final list = data.map(CartEntity.fromJson).toList();
     emit(state.copyWith(items: list));
     add(const _CalculateTotalPriceEvent());
+  }
+
+  Future<void> _onSubscribeToUser(
+    _SubscribeToUser event,
+    Emitter<CartState> emit,
+  ) async {
+    await for (final user in _homeBloc.stream) {
+      add(const _InitialEvent());
+    }
   }
 
   Future<void> _onAddToCart(
@@ -98,22 +111,38 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
       (flower) => flower.item.id == event.item.item.id,
       orElse: () => CartEntity.empty,
     );
+
     if (item == CartEntity.empty) {
       return;
     }
-    final items = state.items.map((element) {
+
+    final updatedItems = <CartEntity>[];
+
+    for (final element in state.items) {
       if (element.item.id == event.item.item.id) {
-        return element.copyWith(
-          quantity: element.quantity - event.item.quantity,
-        );
+        final quantity = element.quantity - event.item.quantity;
+        if (quantity <= 0) {
+          produceSideEffect(BaseCommand.showDialog(element));
+          return;
+        }
+        updatedItems.add(element.copyWith(quantity: quantity));
+      } else {
+        updatedItems.add(element);
       }
-      return element;
-    }).toList();
+    }
     add(
       _EmitAndSaveCartEvent(
-        items.where((element) => element.quantity > 0).toList(),
+        updatedItems.where((element) => element.quantity > 0).toList(),
       ),
     );
+  }
+
+  Future<void> _onRecyclePressed(
+    RecyclePressed event,
+    Emitter<CartState> emit,
+  ) async {
+    final data = [...state.items]..remove(event.item);
+    add(_EmitAndSaveCartEvent(data));
   }
 
   void _onCalculateTotalPriceEvent(
@@ -133,9 +162,9 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
   ) async {
     final cart = event.cart;
     final mapData = cart.map((element) => element.toJson()).toList();
-
-    final result = await repository.writeMapList(
-      SharedPrefsConstants.CART_KEY,
+    final uid = _homeBloc.state.user.uid;
+    final result = await _repository.writeMapList(
+      SharedPrefsConstants.CART_KEY(uid),
       mapData,
     );
     if (result.isError()) {
@@ -149,8 +178,9 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
     ClearCartEvent event,
     Emitter<CartState> emit,
   ) async {
+    final uid = _homeBloc.state.user.uid;
     emit(state.copyWith(items: [], totalPrice: 0));
-    await repository.remove(SharedPrefsConstants.CART_KEY);
+    await _repository.remove(SharedPrefsConstants.CART_KEY(uid));
   }
 
   void _onCartHasErrorEvent(
@@ -172,7 +202,7 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
     try {
       emit(state.copyWith(isLoading: true));
 
-      final result = await orderRepository.put(
+      final result = await _orderRepository.put(
         _makeRequestData(),
         FirestoreConstants.ORDERS_COLLECTION,
       );
@@ -184,7 +214,7 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
           final updatedItems = _getErrorState(failure);
           emit(state.copyWith(items: updatedItems));
           add(_EmitAndSaveCartEvent(state.items));
-          homeBloc.add(const GetFlowerData());
+          _homeBloc.add(const GetFlowerData());
         } else {
           produceSideEffect(BaseCommand.failure(failure));
         }
@@ -192,7 +222,7 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
       }
       produceSideEffect(BaseCommand.success(t.checkout.orderPlaced));
       add(const ClearCartEvent());
-      homeScaffoldBloc.add(const HomeScaffoldOnDestinationSelectedEvent(1));
+      _homeScaffoldBloc.add(const HomeScaffoldOnDestinationSelectedEvent(1));
     } catch (e) {
       produceSideEffect(BaseCommand.failure(Failure(error: e)));
     } finally {
@@ -238,10 +268,10 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
 
   OrderRequest _makeRequestData() {
     return OrderRequest(
-      address: form.state.address.value,
-      email: form.state.email.value,
-      phone: form.state.phone.value,
-      displayName: form.state.username.value,
+      address: _form.state.address.value,
+      email: _form.state.email.value,
+      phone: _form.state.phone.value,
+      displayName: _form.state.username.value,
       products: state.items.map((element) {
         return OrderProductRequest(
           productName: element.item.name,

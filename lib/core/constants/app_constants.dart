@@ -15,4 +15,17 @@ final class AppConstants {
   static const String ORDER_EMAIL_SUBJECT = 'Confirmare comandă';
 
   static const String SMTP_PASSWORD = 'SMTP_PASSWORD';
+
+  static const String PASSWORD_SHORT_TEXT = 'validator.passwordShort';
+  static const String PASSWORD_MISSING_LETTER_TEXT =
+      'validator.passwordMissingLetter';
+  static const String PASSWORD_MISSING_DIGIT_TEXT =
+      'validator.passwordMissingDigit';
+  static const String PASSWORD_MISMATCH_TEXT = 'validator.passwordMismatch';
+  static const String REQUIRED_TEXT = 'validator.required';
+  static const String PHONE_FORMAT_TEXT = 'validator.phoneFormat';
+  static const String EMAIL_INVALID_TEXT = 'validator.invalidEmail';
+
+  static const String FLOWER_TYPE_THREAD = 'home.threadFlower';
+  static const String FLOWER_TYPE_POT = 'home.potFlower';
 }

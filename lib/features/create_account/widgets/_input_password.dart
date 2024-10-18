@@ -13,11 +13,11 @@ class _InputPassword extends StatelessWidget {
       builder: (context, state) {
         return TextFormField(
           onChanged: passwordChanged,
-          initialValue: state.password.value,
+          initialValue: state.password.value.$1,
           obscureText: !state.showPassword,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
-            labelText: t.sign_up.passwordLabel,
+            labelText: context.t.sign_up.passwordLabel,
             suffixIcon: GestureDetector(
               onTap: () {
                 context.read<CreateAccountFormCubit>().showPassword();
@@ -28,38 +28,10 @@ class _InputPassword extends StatelessWidget {
                     : CupertinoIcons.eye_slash,
               ),
             ),
-            errorText: _getErrorText(context, state.password),
+            errorText: state.password.getErrorTuple1,
           ),
         );
       },
     );
-  }
-
-  String? _getErrorText(
-    BuildContext context,
-    FormzInput<dynamic, dynamic> field,
-  ) {
-    if (field.isPure || field.error == null) {
-      return null;
-    }
-
-    final errors = field.error as Set<PasswordValidationError>;
-    final errorMessages = <String>[];
-
-    if (errors.contains(PasswordValidationError.required)) {
-      return context.t.sign_up.required;
-    }
-
-    if (errors.contains(PasswordValidationError.tooShort)) {
-      errorMessages.add(context.t.sign_up.passwordShort);
-    }
-    if (errors.contains(PasswordValidationError.missingLetter)) {
-      errorMessages.add(context.t.sign_up.passwordMissingLetter);
-    }
-    if (errors.contains(PasswordValidationError.missingDigit)) {
-      errorMessages.add(context.t.sign_up.passwordMissingDigit);
-    }
-
-    return errorMessages.isNotEmpty ? errorMessages.join('\n') : null;
   }
 }

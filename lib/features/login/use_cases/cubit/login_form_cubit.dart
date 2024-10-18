@@ -15,7 +15,7 @@ class LoginFormCubit extends Cubit<LoginFormState> {
   }
 
   void updatePassword(String value) {
-    final password = PasswordValidator.dirty(value);
+    final password = PasswordValidator.dirty((value, value));
     emit(state.copyWith(password: password));
   }
 
@@ -32,14 +32,9 @@ class LoginFormCubit extends Cubit<LoginFormState> {
     );
   }
 
-  bool isValid() {
+  void isValid() {
     final form = <FormzInput<dynamic, dynamic>>[state.email, state.password];
-    emit(
-      state.copyWith(
-        email: EmailValidator.dirty(state.email.value),
-        password: PasswordValidator.dirty(state.password.value),
-      ),
-    );
-    return Formz.validate(form);
+    if (Formz.isPure(form)) return emit(state.copyWith(formIsValid: false));
+    return emit(state.copyWith(formIsValid: Formz.validate(form)));
   }
 }

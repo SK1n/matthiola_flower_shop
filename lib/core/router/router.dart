@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/di/di.dart';
+import 'package:matthiola_flower_shop/features/cart/screen/cart_screen.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/bloc/cart_bloc.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/cubit/cart_form_cubit.dart';
 import 'package:matthiola_flower_shop/features/create_account/screen/create_account_screen.dart';
@@ -111,6 +112,7 @@ class ForgotPasswordRoute extends GoRouteData {
     TypedGoRoute<FlowerDetailsRoute>(
       path: _Routes.FLOWER_DETAILS,
     ),
+    TypedGoRoute<CartRoute>(path: _Routes.CART),
   ],
 )
 @immutable
@@ -133,12 +135,15 @@ class HomeScaffoldRoute extends GoRouteData {
         BlocProvider.value(
           value: getIt<FavoriteBloc>(),
         ),
-        BlocProvider.value(
-          value: getIt<CartFormCubit>(),
-        ),
       ],
       child: const HomeScaffoldScreen(),
     );
+  }
+
+  @override
+  FutureOr<bool> onExit(BuildContext context, GoRouterState state) {
+    getIt.resetLazySingleton<CartBloc>();
+    return super.onExit(context, state);
   }
 }
 
@@ -168,6 +173,26 @@ class FlowerDetailsRoute extends GoRouteData {
   }
 }
 
+///
+class CartRoute extends GoRouteData {
+  const CartRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: getIt<CartBloc>(),
+        ),
+        BlocProvider.value(
+          value: getIt<CartFormCubit>(),
+        ),
+      ],
+      child: const CartScreen(),
+    );
+  }
+}
+
 final class _Routes {
   static const String SPLASH = '/';
   static const String LOGIN = '/login';
@@ -175,4 +200,5 @@ final class _Routes {
   static const String FORGOT_PASSWORD = 'forgot_password';
   static const String HOME = '/home';
   static const String FLOWER_DETAILS = 'details/:id';
+  static const String CART = 'cart';
 }

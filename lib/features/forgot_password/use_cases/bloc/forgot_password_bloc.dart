@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/failures/failure.dart';
 import 'package:matthiola_flower_shop/core/validators/email_validator.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_auth_repository.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'forgot_password_event.dart';
 part 'forgot_password_state.dart';
@@ -24,7 +25,7 @@ class ForgotPasswordBloc extends SideEffectBloc<ForgotPasswordEvent,
     Emitter<ForgotPasswordState> emit,
   ) {
     final value = EmailValidator.dirty(event.value);
-    emit(state.copyWith(email: value));
+    emit(state.copyWith(email: value, formIsValid: Formz.validate([value])));
   }
 
   Future<void> _onForgotPasswordSubmitEvent(

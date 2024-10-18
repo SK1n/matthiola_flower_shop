@@ -128,6 +128,7 @@ void _configureBlocs() {
     ..registerLazySingleton<FavoriteBloc>(
       () => FavoriteBloc(
         getIt<ISharedPrefsRepository>(),
+        getIt<HomeBloc>(),
       ),
     );
 }

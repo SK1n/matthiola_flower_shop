@@ -19,7 +19,7 @@ import 'package:matthiola_flower_shop/features/flower_details/use_cases/flower_d
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:matthiola_flower_shop/widgets/loading_widget.dart';
 import 'package:octo_image/octo_image.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'app_bar.dart';
 part 'listener.dart';

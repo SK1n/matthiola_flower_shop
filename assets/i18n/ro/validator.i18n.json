@@ -1,0 +1,9 @@
+{
+    "passwordShort": "Parola trebuie să aibă cel puțin 8 caractere.",
+    "passwordMissingLetter": "Parola trebuie să conțină cel puțin o literă.",
+    "passwordMissingDigit": "Parola trebuie să conțină cel puțin un număr.",
+    "passwordMismatch": "Parolele nu se potrivesc. Vă rugăm să verificați că sunt identice.",
+    "required": "Acest câmp nu poate fi lăsat necompletat.",
+    "invalidEmail": "Vă rugăm să introduceți o adresă de email validă.",
+    "phoneFormat": "Vă rugăm să introduceți un număr de telefon valid. Formate acceptate:\n+40213-564-864\n+40213.564.864\n+40213 564 864\n0213-564-864\n0712456789"
+}

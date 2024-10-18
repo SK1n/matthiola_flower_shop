@@ -9,6 +9,7 @@ sealed class BaseCommand {
   factory BaseCommand.go(GoRouteData route) = GoCommand;
   factory BaseCommand.pop({dynamic data}) = PopCommand;
   factory BaseCommand.goBranch(int branch) = GoBranchCommand;
+  factory BaseCommand.showDialog([dynamic data]) = ShowDialogCommand;
 
   void when({
     required void Function(Failure) failure,
@@ -16,6 +17,7 @@ sealed class BaseCommand {
     void Function({dynamic data})? pop,
     void Function(GoRouteData)? go,
     void Function(int)? goBranch,
+    void Function([dynamic data])? showDialog,
   }) {
     if (this is FailureCommand) {
       failure((this as FailureCommand).failure);
@@ -31,6 +33,9 @@ sealed class BaseCommand {
       return;
     } else if (this is GoBranchCommand) {
       goBranch?.call((this as GoBranchCommand).branch);
+      return;
+    } else if (this is ShowDialogCommand) {
+      showDialog?.call((this as ShowDialogCommand).data);
       return;
     }
   }
@@ -61,4 +66,9 @@ class GoCommand extends BaseCommand {
 class GoBranchCommand extends BaseCommand {
   GoBranchCommand(this.branch);
   final int branch;
+}
+
+class ShowDialogCommand extends BaseCommand {
+  ShowDialogCommand([this.data]);
+  final dynamic data;
 }

@@ -12,5 +12,7 @@
         "one": "Last $n pieces!",
         "other": "Last $n pieces!"
     },
-    "inStock": "${value} items in stock"
+    "inStock": "${value} items in stock",
+    "cantRefreshNow": "The list can't be refreshed right now. Please try again shortly.",
+    "welcomeBack": "Welcome back,"
 }

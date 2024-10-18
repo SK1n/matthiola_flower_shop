@@ -1,16 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
+import 'package:matthiola_flower_shop/core/utils/extensions/input_extension.dart';
 import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
-import 'package:matthiola_flower_shop/core/validators/email_validator.dart';
 import 'package:matthiola_flower_shop/features/forgot_password/use_cases/bloc/forgot_password_bloc.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:matthiola_flower_shop/widgets/loading_widget.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part '../widgets/input_email.dart';
 part 'listener.dart';
@@ -40,12 +38,14 @@ class ForgotPasswordScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       height: 50,
-                      child: CupertinoButton.filled(
-                        onPressed: () {
-                          context
-                              .read<ForgotPasswordBloc>()
-                              .add(const ForgotPasswordSubmitEvent());
-                        },
+                      child: FilledButton(
+                        onPressed: state.formIsValid
+                            ? () {
+                                context
+                                    .read<ForgotPasswordBloc>()
+                                    .add(const ForgotPasswordSubmitEvent());
+                              }
+                            : null,
                         child: Text(
                           context.t.reset_password.reset,
                         ),

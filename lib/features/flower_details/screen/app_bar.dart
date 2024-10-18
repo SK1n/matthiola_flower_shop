@@ -30,6 +30,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
               },
               icon: Icon(
                 isFavorite ? Icons.favorite : Icons.favorite_outline,
+                color: context.colorScheme.primary,
               ),
             ),
           ],

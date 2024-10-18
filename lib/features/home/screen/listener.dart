@@ -15,6 +15,8 @@ void _sideEffectListener(BuildContext context, BaseCommand command) {
           (route as FlowerDetailsRoute).go(context);
         case LoginRoute:
           (route as LoginRoute).pushReplacement(context);
+        case CartRoute:
+          (route as CartRoute).go(context);
       }
     },
   );

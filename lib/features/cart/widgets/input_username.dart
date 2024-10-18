@@ -17,25 +17,10 @@ class _InputUsername extends StatelessWidget {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             labelText: t.sign_up.usernameLabel,
-            errorText: _getErrorText(context, state.username),
+            errorText: state.username.getError,
           ),
         );
       },
     );
-  }
-
-  String? _getErrorText(
-    BuildContext context,
-    FormzInput<dynamic, dynamic> field,
-  ) {
-    if (field.isPure || field.error == null) {
-      return null;
-    }
-
-    switch (field.error) {
-      case RequiredValidationError.invalid:
-        return context.t.sign_up.required;
-    }
-    return null;
   }
 }

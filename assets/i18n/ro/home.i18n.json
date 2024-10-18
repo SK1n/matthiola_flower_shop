@@ -12,5 +12,7 @@
         "one": "Ultimele $n bucăți!",
         "other": "Ultimele $n de bucăți!"
     },
-    "inStock": "${value} bucăți în stoc."
+    "inStock": "${value} bucăți în stoc.",
+    "cantRefreshNow": "Lista nu poate fi reîmprospătată acum. Încercați din nou în scurt timp.",
+    "welcomeBack": "Bine ați revenit,"
 }

@@ -40,6 +40,7 @@ class _TranslationsEn implements Translations {
 	@override late final _TranslationsResetPasswordEn reset_password = _TranslationsResetPasswordEn._(_root);
 	@override late final _TranslationsSignInEn sign_in = _TranslationsSignInEn._(_root);
 	@override late final _TranslationsSignUpEn sign_up = _TranslationsSignUpEn._(_root);
+	@override late final _TranslationsValidatorEn validator = _TranslationsValidatorEn._(_root);
 }
 
 // Path: cart
@@ -55,6 +56,7 @@ class _TranslationsCartEn implements _TranslationsCartRo {
 	@override String get placeOrder => 'Checkout';
 	@override String priceChanged({required Object value}) => 'The product price has changed, new price ${value}';
 	@override String notEnoughStock({required Object value}) => 'There is not enough stock, maximum ${value}';
+	@override late final _TranslationsCartRemoveDialogEn removeDialog = _TranslationsCartRemoveDialogEn._(_root);
 }
 
 // Path: checkout
@@ -170,6 +172,8 @@ class _TranslationsHomeEn implements _TranslationsHomeRo {
 		other: 'Last ${n} pieces!',
 	);
 	@override String inStock({required Object value}) => '${value} items in stock';
+	@override String get cantRefreshNow => 'The list can\'t be refreshed right now. Please try again shortly.';
+	@override String get welcomeBack => 'Welcome back,';
 }
 
 // Path: profile
@@ -211,18 +215,11 @@ class _TranslationsSignInEn implements _TranslationsSignInRo {
 	@override String get title => 'Welcome back';
 	@override String get emailLabel => 'Enter your email address';
 	@override String get emailHint => 'E.g. yourname@gmail.com';
-	@override String get emailIsValid => 'Email is valid';
-	@override String get emailFormat => 'Email format';
 	@override String get emailPrefix => 'Email';
 	@override String get passwordLabel => 'Enter your password';
-	@override String get passwordShort => 'At least 8 characters.';
-	@override String get passwordPrefix => 'Password';
-	@override String get passwordMissingLetter => 'At least 1 letter.';
-	@override String get passwordMissingDigit => 'At least 1 number.';
 	@override String get noAccount => 'Don\'t have an account yet?';
 	@override String get register => 'Register';
-	@override String get signIn => 'Sign in';
-	@override String get signInWithGoogle => 'Sign in with Google';
+	@override String get signIn => 'Sign In';
 }
 
 // Path: sign_up
@@ -232,22 +229,43 @@ class _TranslationsSignUpEn implements _TranslationsSignUpRo {
 	@override final _TranslationsEn _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Create account';
+	@override String get title => 'Create an Account';
 	@override String get emailLabel => 'Enter your email address';
 	@override String get emailHint => 'E.g. yourname@gmail.com';
-	@override String get emailIsValid => 'Email is valid';
-	@override String get emailFormat => 'Email format';
 	@override String get passwordLabel => 'Enter your password';
-	@override String get passwordShort => 'At least 8 characters.';
-	@override String get passwordMissingLetter => 'At least 1 letter.';
-	@override String get passwordMissingDigit => 'At least 1 number.';
-	@override String get rePasswordLabel => 'Enter your password again';
-	@override String get passwordMismatch => 'The passwords match';
+	@override String get rePasswordLabel => 'Re-enter your password';
 	@override String get accountCreated => 'Account created!';
-	@override String get usernameLabel => 'Flower shop name';
-	@override String get required => 'This field is required!';
-	@override String get createAccount => 'Create account';
+	@override String get usernameLabel => 'Flower Shop Name';
+	@override String get createAccount => 'Create Account';
 	@override String get addressLabel => 'Address';
 	@override String get phoneLabel => 'Phone Number';
-	@override String get phoneFormat => 'Incorrect phone number format\nWe accept the following:\n+40213-564-864\n+40213.564.864\n+40213 564 864\n0213-564-864\n0712456789';
+}
+
+// Path: validator
+class _TranslationsValidatorEn implements _TranslationsValidatorRo {
+	_TranslationsValidatorEn._(this._root);
+
+	@override final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get passwordShort => 'Password must be at least 8 characters long.';
+	@override String get passwordMissingLetter => 'Password must include at least one letter.';
+	@override String get passwordMissingDigit => 'Password must include at least one number.';
+	@override String get passwordMismatch => 'Passwords do not match. Please make sure both entries are identical.';
+	@override String get required => 'This field cannot be left empty.';
+	@override String get invalidEmail => 'Please enter a valid email address.';
+	@override String get phoneFormat => 'Please enter a valid phone number. Accepted formats:\n+40213-564-864\n+40213.564.864\n+40213 564 864\n0213-564-864\n0712456789';
+}
+
+// Path: cart.removeDialog
+class _TranslationsCartRemoveDialogEn implements _TranslationsCartRemoveDialogRo {
+	_TranslationsCartRemoveDialogEn._(this._root);
+
+	@override final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Remove from cart';
+	@override String get content => 'Are you sure you want to remove this product from your cart?';
+	@override String get cancel => 'Cancel';
+	@override String get remove => 'Remove';
 }

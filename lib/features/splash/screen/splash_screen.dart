@@ -5,7 +5,7 @@ import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
 import 'package:matthiola_flower_shop/features/splash/use_cases/bloc/splash_bloc.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'listener.dart';
 

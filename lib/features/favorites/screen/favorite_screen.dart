@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
+import 'package:matthiola_flower_shop/core/utils/extensions/build_context_extension.dart';
 import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
 import 'package:matthiola_flower_shop/features/favorites/use_cases/favorite_bloc.dart';
 import 'package:matthiola_flower_shop/features/home/widgets/flower_card.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:matthiola_flower_shop/widgets/not_found_widget.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'listener.dart';
 
@@ -23,9 +24,12 @@ class FavoriteScreen extends StatelessWidget {
         appBar: AppBar(
           title: Row(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(8),
-                child: Icon(Icons.favorite),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Icon(
+                  Icons.favorite,
+                  color: context.colorScheme.primary,
+                ),
               ),
               Text(context.t.home.favorite),
             ],
@@ -48,7 +52,7 @@ class FavoriteScreen extends StatelessWidget {
                       crossAxisCount: 2,
                       crossAxisSpacing: 20,
                       childAspectRatio: 0.7,
-                      mainAxisSpacing: 20,
+                      mainAxisSpacing: 10,
                     ),
                     itemCount: state.items.length,
                     itemBuilder: (context, index) {
@@ -60,7 +64,7 @@ class FavoriteScreen extends StatelessWidget {
                         },
                         child: FlowerCard(
                           flower: state.items[index],
-                          isFavorite: true,
+                          showBanner: true,
                         ),
                       );
                     },

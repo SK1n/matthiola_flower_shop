@@ -1,15 +1,23 @@
 import 'package:formz/formz.dart';
+import 'package:matthiola_flower_shop/core/constants/app_constants.dart';
+import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 
-enum RequiredValidationError { invalid }
+enum RequiredValidationError {
+  required(AppConstants.REQUIRED_TEXT);
 
-class RequiredValidator extends FormzInput<String, RequiredValidationError> {
+  const RequiredValidationError(this.key);
+  final String key;
+  String get text => t[key] as String;
+}
+
+class RequiredValidator extends FormzInput<String, String> {
   const RequiredValidator.pure() : super.pure('');
 
   const RequiredValidator.dirty([super.value = '']) : super.dirty();
   @override
-  RequiredValidationError? validator(String? value) {
+  String? validator(String? value) {
     if (value == null || value.isEmpty) {
-      return RequiredValidationError.invalid;
+      return RequiredValidationError.required.text;
     }
     return null;
   }

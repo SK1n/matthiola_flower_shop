@@ -1,20 +1,12 @@
 {
-    "title": "Create account",
+    "title": "Create an Account",
     "emailLabel": "Enter your email address",
     "emailHint": "E.g. yourname@gmail.com",
-    "emailIsValid": "Email is valid",
-    "emailFormat": "Email format",
     "passwordLabel": "Enter your password",
-    "passwordShort": "At least 8 characters.",
-    "passwordMissingLetter": "At least 1 letter.",
-    "passwordMissingDigit": "At least 1 number.",
-    "rePasswordLabel": "Enter your password again",
-    "passwordMismatch": "The passwords match",
+    "rePasswordLabel": "Re-enter your password",
     "accountCreated": "Account created!",
-    "usernameLabel": "Flower shop name",
-    "required": "This field is required!",
-    "createAccount": "Create account",
+    "usernameLabel": "Flower Shop Name",
+    "createAccount": "Create Account",
     "addressLabel": "Address",
-    "phoneLabel": "Phone Number",
-    "phoneFormat": "Incorrect phone number format\nWe accept the following:\n+40213-564-864\n+40213.564.864\n+40213 564 864\n0213-564-864\n0712456789"
+    "phoneLabel": "Phone Number"
 }

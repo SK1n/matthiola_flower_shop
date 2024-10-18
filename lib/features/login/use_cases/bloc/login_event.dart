@@ -18,3 +18,7 @@ class LoginCreateAccountTappedEvent extends LoginEvent {
 class LoginForgotPasswordTappedEvent extends LoginEvent {
   const LoginForgotPasswordTappedEvent();
 }
+
+class _SubscribeToForm extends LoginEvent {
+  const _SubscribeToForm();
+}

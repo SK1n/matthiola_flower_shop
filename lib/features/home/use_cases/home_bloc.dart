@@ -13,7 +13,7 @@ import 'package:matthiola_flower_shop/domain/models/flower/flower_entity.dart';
 import 'package:matthiola_flower_shop/domain/models/user/user_entity.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_auth_repository.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_repository.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -31,18 +31,29 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     on<_GetUserData>(_onGetUserData);
     on<SignOutEvent>(_onSignOutEvent);
     on<DeleteAccountEvent>(_onDeleteAccountEvent);
+    on<OnCartTappedEvent>(_onOnCartTappedEvent);
     add(const GetFlowerData());
     add(const _GetUserData());
   }
 
   final IRepository<FlowerEntity> repository;
   final IAuthRepository auth;
+  bool _canRefresh = true;
 
   Future<void> _onGetFlowerData(
     GetFlowerData event,
     Emitter<HomeState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
+    if (!_canRefresh) {
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+      return emit(state.copyWith(isLoading: false));
+    }
+    Timer(const Duration(minutes: 2), () {
+      _canRefresh = true;
+    });
+
+    _canRefresh = false;
     try {
       final result =
           await repository.getList(FirestoreConstants.FLOWERS_COLLECTION);
@@ -98,6 +109,7 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     ).toList();
     final dataToEmit = queryData.map((element) => element.choice).toList();
     if (dataToEmit.isEmpty) {
+      emit(state.copyWith(filteredData: []));
       return produceSideEffect(
         BaseCommand.failure(const Failure(code: ErrorCodes.emptySearch)),
       );
@@ -127,7 +139,6 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     if (result.isError()) {
       return produceSideEffect(BaseCommand.failure(result.tryGetError()!));
     }
-    print(result.tryGetSuccess());
     emit(state.copyWith(user: result.tryGetSuccess()));
     await emit.onEach(
       auth.userSubscription(),
@@ -159,5 +170,12 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
       return produceSideEffect(BaseCommand.failure(result.tryGetError()!));
     }
     emit(state.copyWith(isLoading: false));
+  }
+
+  void _onOnCartTappedEvent(
+    OnCartTappedEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    produceSideEffect(BaseCommand.go(const CartRoute()));
   }
 }

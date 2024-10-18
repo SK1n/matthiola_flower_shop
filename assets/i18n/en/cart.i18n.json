@@ -4,5 +4,11 @@
     "total": "Total",
     "placeOrder": "Checkout",
     "priceChanged": "The product price has changed, new price $value",
-    "notEnoughStock": "There is not enough stock, maximum $value"
+    "notEnoughStock": "There is not enough stock, maximum $value",
+    "removeDialog": {
+        "title": "Remove from cart",
+        "content": "Are you sure you want to remove this product from your cart?",
+        "cancel": "Cancel",
+        "remove": "Remove"
+    }
 }

@@ -110,6 +110,10 @@ RouteBase get $homeScaffoldRoute => GoRouteData.$route(
           path: 'details/:id',
           factory: $FlowerDetailsRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'cart',
+          factory: $CartRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -139,6 +143,23 @@ extension $FlowerDetailsRouteExtension on FlowerDetailsRoute {
 
   String get location => GoRouteData.$location(
         '/home/details/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $CartRouteExtension on CartRoute {
+  static CartRoute _fromState(GoRouterState state) => const CartRoute();
+
+  String get location => GoRouteData.$location(
+        '/home/cart',
       );
 
   void go(BuildContext context) => context.go(location);

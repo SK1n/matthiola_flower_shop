@@ -1,8 +1,15 @@
-enum FlowerType {
-  thread,
-  pot,
+import 'package:matthiola_flower_shop/core/constants/app_constants.dart';
+import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 
-  invalid;
+enum FlowerType {
+  thread(AppConstants.FLOWER_TYPE_THREAD),
+  pot(AppConstants.FLOWER_TYPE_POT),
+  invalid('');
+
+  const FlowerType(this.key);
+  final String key;
+
+  String get text => t[key] as String;
 
   static FlowerType fromCode(int code) {
     return switch (code) {

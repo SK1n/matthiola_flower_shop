@@ -2,19 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
 import 'package:gap/gap.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/extensions/build_context_extension.dart';
+import 'package:matthiola_flower_shop/core/utils/extensions/input_extension.dart';
 import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
-import 'package:matthiola_flower_shop/core/validators/email_validator.dart';
-import 'package:matthiola_flower_shop/core/validators/password_validator.dart';
 import 'package:matthiola_flower_shop/features/login/use_cases/bloc/login_bloc.dart';
 import 'package:matthiola_flower_shop/features/login/use_cases/cubit/login_form_cubit.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:matthiola_flower_shop/widgets/loading_widget.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part '../widgets/input_email.dart';
 part '../widgets/input_password.dart';
@@ -42,7 +40,7 @@ class LoginScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8),
                       child: Text(
-                        context.t.sign_in.signIn,
+                        context.t.sign_in.title,
                         style: context.textTheme.displaySmall,
                       ),
                     ),
@@ -65,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                       ],
                     ),
                     const Gap(10),
-                    const _SubmitButton(),
+                    _SubmitButton(state),
                     Expanded(child: Container()),
                     Center(
                       child: RichText(

@@ -1,6 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
@@ -9,7 +9,7 @@ import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
 import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
 import 'package:matthiola_flower_shop/features/home_scaffold/use_cases/home_scaffold_bloc.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'listener.dart';
 
@@ -26,9 +26,12 @@ class ProfileScreen extends StatelessWidget {
             appBar: AppBar(
               title: Row(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(Icons.person),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Icon(
+                      Icons.person,
+                      color: context.colorScheme.primary,
+                    ),
                   ),
                   Text(context.t.home.profile),
                 ],
@@ -37,51 +40,45 @@ class ProfileScreen extends StatelessWidget {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Expanded(
-                              child: CircleAvatar(
-                                radius: 30,
-                                child: Icon(Icons.person),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AutoSizeText(
-                                    state.user.displayName,
-                                    style: context.textTheme.titleMedium,
-                                  ),
-                                  AutoSizeText(
-                                    state.user.email,
-                                    style: context.textTheme.titleMedium,
-                                  ),
-                                  AutoSizeText(
-                                    state.user.address,
-                                    style: context.textTheme.titleMedium,
-                                  ),
-                                  AutoSizeText(
-                                    state.user.phone,
-                                    style: context.textTheme.titleMedium,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                const Gap(10),
+                Center(
+                  child: CircleAvatar(
+                    radius: 40,
+                    child: Icon(
+                      Icons.person,
+                      color: context.colorScheme.primary,
                     ),
                   ),
                 ),
+                ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    color: context.colorScheme.primary,
+                  ),
+                  title: Text(state.user.displayName),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.email,
+                    color: context.colorScheme.primary,
+                  ),
+                  title: Text(state.user.email),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.location_on,
+                    color: context.colorScheme.primary,
+                  ),
+                  title: Text(state.user.address),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.phone,
+                    color: context.colorScheme.primary,
+                  ),
+                  title: Text(state.user.phone),
+                ),
+                const Gap(10),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: OutlinedButton(

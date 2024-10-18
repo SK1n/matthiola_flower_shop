@@ -2,16 +2,9 @@
     "title": "Welcome back",
     "emailLabel": "Enter your email address",
     "emailHint": "E.g. yourname@gmail.com",
-    "emailIsValid": "Email is valid",
-    "emailFormat": "Email format",
     "emailPrefix": "Email",
     "passwordLabel": "Enter your password",
-    "passwordShort": "At least 8 characters.",
-    "passwordPrefix": "Password",
-    "passwordMissingLetter": "At least 1 letter.",
-    "passwordMissingDigit": "At least 1 number.",
     "noAccount": "Don't have an account yet?",
     "register": "Register",
-    "signIn": "Sign in",
-    "signInWithGoogle": "Sign in with Google"
+    "signIn": "Sign In"
 }

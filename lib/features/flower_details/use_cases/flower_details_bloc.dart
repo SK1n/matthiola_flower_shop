@@ -6,7 +6,7 @@ import 'package:matthiola_flower_shop/core/utils/failures/failure.dart';
 import 'package:matthiola_flower_shop/domain/models/flower/flower_entity.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_repository.dart';
 import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'flower_details_event.dart';
 part 'flower_details_state.dart';

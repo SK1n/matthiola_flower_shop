@@ -56,6 +56,7 @@ class Failure extends Equatable implements Exception {
       ErrorCodes.writeError: t.errors.writeError,
       ErrorCodes.deleteError: t.errors.deleteError,
       ErrorCodes.maxQuantityReached: t.flower_details.maxQuantityReached,
+      ErrorCodes.cantRefreshNow: t.home.cantRefreshNow,
     };
   }
 }

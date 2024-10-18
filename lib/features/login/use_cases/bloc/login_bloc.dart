@@ -5,7 +5,7 @@ import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/failures/failure.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_auth_repository.dart';
 import 'package:matthiola_flower_shop/features/login/use_cases/cubit/login_form_cubit.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -18,21 +18,33 @@ class LoginBloc extends SideEffectBloc<LoginEvent, LoginState, BaseCommand> {
     on<LoginRequestedEvent>(_onLoginRequestEvent);
     on<LoginCreateAccountTappedEvent>(_onLoginCreateAccountTappedEvent);
     on<LoginForgotPasswordTappedEvent>(_onLoginForgotPasswordTappedEvent);
+    on<_SubscribeToForm>(_onSubscribeToForm);
+    add(const _SubscribeToForm());
   }
 
   final IAuthRepository auth;
   final LoginFormCubit form;
 
+  Future<void> _onSubscribeToForm(
+    _SubscribeToForm event,
+    Emitter<LoginState> emit,
+  ) async {
+    await for (final data in form.stream) {
+      form.isValid();
+      emit(state.copyWith(formIsValid: data.formIsValid));
+    }
+  }
+
   Future<void> _onLoginRequestEvent(
     LoginRequestedEvent event,
     Emitter<LoginState> emit,
   ) async {
-    if (!form.isValid()) return;
+    if (!state.formIsValid) return;
     emit(state.copyWith(isLoading: true));
     try {
       final result = await auth.login(
         form.state.email.value,
-        form.state.password.value,
+        form.state.password.value.$1,
       );
       if (result.isError()) {
         return produceSideEffect(BaseCommand.failure(result.tryGetError()!));

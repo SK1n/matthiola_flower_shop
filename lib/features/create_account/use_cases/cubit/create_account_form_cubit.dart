@@ -4,7 +4,6 @@ import 'package:formz/formz.dart';
 import 'package:matthiola_flower_shop/core/validators/email_validator.dart';
 import 'package:matthiola_flower_shop/core/validators/password_validator.dart';
 import 'package:matthiola_flower_shop/core/validators/phone_validator.dart';
-import 'package:matthiola_flower_shop/core/validators/re_password_validator.dart';
 import 'package:matthiola_flower_shop/core/validators/required_validator.dart';
 
 part 'create_account_form_state.dart';
@@ -26,16 +25,13 @@ class CreateAccountFormCubit extends Cubit<CreateAccountFormState> {
   }
 
   void passwordChanged(String value) {
-    final password = PasswordValidator.dirty(value);
+    final password = PasswordValidator.dirty((value, state.password.value.$2));
     emit(state.copyWith(password: password));
-    rePasswordChanged(value);
   }
 
   void rePasswordChanged(String value) {
-    final rePassword = RePasswordValidator.dirty(
-      (value: value, matchedValue: state.password.value),
-    );
-    emit(state.copyWith(rePassword: rePassword));
+    final password = PasswordValidator.dirty((state.password.value.$1, value));
+    emit(state.copyWith(password: password));
   }
 
   void usernameChanged(String value) {
@@ -57,30 +53,16 @@ class CreateAccountFormCubit extends Cubit<CreateAccountFormState> {
     emit(state.copyWith(showPassword: !state.showPassword));
   }
 
-  bool isValid() {
+  void isValid() {
     final fields = <FormzInput<dynamic, dynamic>>[
       state.email,
       state.password,
-      state.rePassword,
       state.username,
       state.address,
       state.phone,
     ];
-
-    validate();
-    return Formz.validate(fields);
-  }
-
-  void validate() {
-    final updatedState = state.copyWith(
-      email: EmailValidator.dirty(state.email.value),
-      password: PasswordValidator.dirty(state.password.value),
-      rePassword: RePasswordValidator.dirty(state.rePassword.value),
-      username: RequiredValidator.dirty(state.username.value),
-      address: RequiredValidator.dirty(state.address.value),
-      phone: PhoneValidator.dirty(state.phone.value),
-    );
-    emit(updatedState);
+    if (Formz.isPure(fields)) return emit(state.copyWith(formIsValid: false));
+    return emit(state.copyWith(formIsValid: Formz.validate(fields)));
   }
 
   void resetForm() {
@@ -88,7 +70,6 @@ class CreateAccountFormCubit extends Cubit<CreateAccountFormState> {
       state.copyWith(
         email: const EmailValidator.pure(),
         password: const PasswordValidator.pure(),
-        rePassword: const RePasswordValidator.pure(),
         username: const RequiredValidator.pure(),
         showPassword: false,
       ),

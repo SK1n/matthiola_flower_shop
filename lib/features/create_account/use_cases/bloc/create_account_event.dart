@@ -10,3 +10,7 @@ sealed class CreateAccountEvent extends Equatable {
 class CreateAccountCreateEvent extends CreateAccountEvent {
   const CreateAccountCreateEvent();
 }
+
+class _SubscribeToFormCubit extends CreateAccountEvent {
+  const _SubscribeToFormCubit();
+}

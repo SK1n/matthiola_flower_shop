@@ -11,6 +11,10 @@ class _GetFavoriteEvent extends FavoriteEvent {
   const _GetFavoriteEvent();
 }
 
+class _SubscribeToUserEvent extends FavoriteEvent {
+  const _SubscribeToUserEvent();
+}
+
 class SaveFavoriteEvent extends FavoriteEvent {
   const SaveFavoriteEvent(this.item);
   final FlowerEntity item;

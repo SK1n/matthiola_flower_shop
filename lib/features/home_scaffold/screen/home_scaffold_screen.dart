@@ -4,14 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
-import 'package:matthiola_flower_shop/features/cart/screen/cart_screen.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/bloc/cart_bloc.dart';
 import 'package:matthiola_flower_shop/features/favorites/screen/favorite_screen.dart';
 import 'package:matthiola_flower_shop/features/home/screen/home_screen.dart';
 import 'package:matthiola_flower_shop/features/home_scaffold/use_cases/home_scaffold_bloc.dart';
 import 'package:matthiola_flower_shop/features/profile/screen/profile_screen.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
-import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'listener.dart';
 
@@ -46,23 +45,6 @@ class HomeScaffoldScreen extends StatelessWidget {
                     label: context.t.home.home,
                   ),
                   NavigationDestination(
-                    selectedIcon: const Icon(Icons.shopping_bag),
-                    icon: Badge(
-                      label: Center(
-                        child: Text(
-                          context
-                              .watch<CartBloc>()
-                              .state
-                              .items
-                              .length
-                              .toString(),
-                        ),
-                      ),
-                      child: const Icon(Icons.shopping_bag_outlined),
-                    ),
-                    label: context.t.home.cart,
-                  ),
-                  NavigationDestination(
                     selectedIcon: const Icon(Icons.person),
                     icon: const Icon(Icons.person_outline),
                     label: context.t.home.profile,
@@ -72,8 +54,7 @@ class HomeScaffoldScreen extends StatelessWidget {
               body: SafeArea(
                 child: [
                   const FavoriteScreen(),
-                  HomeScreen(),
-                  const CartScreen(),
+                  const HomeScreen(),
                   const ProfileScreen(),
                 ][state.index],
               ),

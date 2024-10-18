@@ -50,3 +50,7 @@ class SignOutEvent extends HomeEvent {
 class DeleteAccountEvent extends HomeEvent {
   const DeleteAccountEvent();
 }
+
+class OnCartTappedEvent extends HomeEvent {
+  const OnCartTappedEvent();
+}

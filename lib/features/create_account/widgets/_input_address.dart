@@ -17,25 +17,10 @@ class _InputAddress extends StatelessWidget {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             labelText: context.t.sign_up.addressLabel,
-            errorText: _getErrorText(context, state.address),
+            errorText: state.address.getError,
           ),
         );
       },
     );
-  }
-
-  String? _getErrorText(
-    BuildContext context,
-    FormzInput<dynamic, dynamic> field,
-  ) {
-    if (field.isPure || field.error == null) {
-      return null;
-    }
-
-    switch (field.error) {
-      case RequiredValidationError.invalid:
-        return context.t.sign_up.required;
-    }
-    return null;
   }
 }

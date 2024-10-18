@@ -39,4 +39,5 @@ final class ErrorCodes {
   static const String writeError = 'write-error';
   static const String deleteError = 'delete-error';
   static const String maxQuantityReached = 'max-quantity-reached';
+  static const String cantRefreshNow = 'cant-refresh-now';
 }

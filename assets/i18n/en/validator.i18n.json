@@ -1,0 +1,9 @@
+{
+    "passwordShort": "Password must be at least 8 characters long.",
+    "passwordMissingLetter": "Password must include at least one letter.",
+    "passwordMissingDigit": "Password must include at least one number.",
+    "passwordMismatch": "Passwords do not match. Please make sure both entries are identical.",
+    "required": "This field cannot be left empty.",
+    "invalidEmail": "Please enter a valid email address.",
+    "phoneFormat": "Please enter a valid phone number. Accepted formats:\n+40213-564-864\n+40213.564.864\n+40213 564 864\n0213-564-864\n0712456789"
+}
