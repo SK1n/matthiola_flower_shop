@@ -1,13 +1,15 @@
 import 'package:matthiola_flower_shop/core/constants/app_constants.dart';
+import 'package:matthiola_flower_shop/core/constants/assets_constants.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 
 enum FlowerType {
-  thread(AppConstants.FLOWER_TYPE_THREAD),
-  pot(AppConstants.FLOWER_TYPE_POT),
-  invalid('');
+  thread(AppConstants.FLOWER_TYPE_THREAD, AssetsConstants.STEM_FLOWER),
+  pot(AppConstants.FLOWER_TYPE_POT, AssetsConstants.POT_FLOWER),
+  invalid('', '');
 
-  const FlowerType(this.key);
+  const FlowerType(this.key, this.svg);
   final String key;
+  final String svg;
 
   String get text => t[key] as String;
 

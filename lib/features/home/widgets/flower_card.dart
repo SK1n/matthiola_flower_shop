@@ -153,18 +153,16 @@ class FlowerCard extends StatelessWidget {
                             ),
                           );
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: SvgPicture.asset(
-                          AssetsConstants.ADD_TO_CART,
-                          width: 20,
-                          height: 20,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SvgPicture.asset(
+                        AssetsConstants.ADD_TO_CART,
+                        colorFilter: ColorFilter.mode(
+                          context.colorScheme.primary,
+                          BlendMode.srcIn,
                         ),
+                        width: 30,
+                        height: 30,
                       ),
                     ),
                   ),

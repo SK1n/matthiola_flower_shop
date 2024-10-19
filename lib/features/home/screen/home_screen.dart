@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
+import 'package:matthiola_flower_shop/core/utils/extensions/build_context_extension.dart';
 import 'package:matthiola_flower_shop/core/utils/flower_type.dart';
 import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
 import 'package:matthiola_flower_shop/domain/models/flower/flower_entity.dart';
@@ -61,6 +64,7 @@ class HomeScreen extends StatelessWidget {
                       child: _SearchBar(state: state),
                     ),
                   ),
+                  const SliverGap(10),
                   SliverPadding(
                     padding: const EdgeInsets.only(top: 10),
                     sliver: SliverToBoxAdapter(
@@ -71,16 +75,32 @@ class HomeScreen extends StatelessWidget {
                         child: Wrap(
                           spacing: 8,
                           children: FlowerType.values.map((flowerType) {
+                            final selected = FlowerType.fromCode(
+                                  state.choiceChipSelectedItem,
+                                ) ==
+                                flowerType;
                             if (flowerType.isInvalid) {
                               return Container();
                             }
                             return ChoiceChip(
-                              label: Text(flowerType.text),
+                              label: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SvgPicture.asset(
+                                    flowerType.svg,
+                                    colorFilter: ColorFilter.mode(
+                                      context.colorScheme.onPrimaryContainer,
+                                      BlendMode.srcIn,
+                                    ),
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                  const Gap(5),
+                                  Text(flowerType.text),
+                                ],
+                              ),
                               showCheckmark: false,
-                              selected: FlowerType.fromCode(
-                                    state.choiceChipSelectedItem,
-                                  ) ==
-                                  flowerType,
+                              selected: selected,
                               onSelected: (isSelected) {
                                 context.read<HomeBloc>().add(
                                       HomeFlowerTypeChanged(
@@ -94,6 +114,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SliverGap(10),
                   SliverPadding(
                     padding: const EdgeInsets.only(top: 10),
                     sliver: SliverGrid.builder(

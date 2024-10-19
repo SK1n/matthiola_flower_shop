@@ -13,5 +13,8 @@ final class AssetsConstants {
 
   static String NOT_FOUND_ANIM = '${_ASSETS}animations/not-found.json';
 
-  static String ADD_TO_CART = '${_ICONS}add_to_cart'.svg;
+  static const String ADD_TO_CART = '${_ICONS}shopping_cart.svg';
+  static const String POT_FLOWER = '${_ICONS}pot_flower.svg';
+
+  static const String STEM_FLOWER = '${_ICONS}stem_flower.svg';
 }
