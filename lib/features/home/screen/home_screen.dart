@@ -44,101 +44,103 @@ class HomeScreen extends StatelessWidget {
                 ? state.stemData
                 : state.potData;
           }
-          return Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: RefreshIndicator.adaptive(
-              onRefresh: () async {
-                context.read<HomeBloc>().add(const GetFlowerData());
-              },
-              child: CustomScrollView(
-                slivers: [
-                  const SliverPadding(
-                    padding: EdgeInsets.only(bottom: 10, top: 10),
-                    sliver: SliverToBoxAdapter(
-                      child: UserTile(),
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: RefreshIndicator.adaptive(
+                onRefresh: () async {
+                  context.read<HomeBloc>().add(const GetFlowerData());
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    const SliverPadding(
+                      padding: EdgeInsets.only(bottom: 10, top: 10),
+                      sliver: SliverToBoxAdapter(
+                        child: UserTile(),
+                      ),
                     ),
-                  ),
-                  SliverPadding(
-                    padding: const EdgeInsets.only(top: 10),
-                    sliver: SliverToBoxAdapter(
-                      child: _SearchBar(state: state),
+                    SliverPadding(
+                      padding: const EdgeInsets.only(top: 10),
+                      sliver: SliverToBoxAdapter(
+                        child: _SearchBar(state: state),
+                      ),
                     ),
-                  ),
-                  const SliverGap(10),
-                  SliverPadding(
-                    padding: const EdgeInsets.only(top: 10),
-                    sliver: SliverToBoxAdapter(
-                      child: Visibility(
-                        maintainAnimation: true,
-                        maintainState: true,
-                        visible: state.filteredData.isEmpty,
-                        child: Wrap(
-                          spacing: 8,
-                          children: FlowerType.values.map((flowerType) {
-                            final selected = FlowerType.fromCode(
-                                  state.choiceChipSelectedItem,
-                                ) ==
-                                flowerType;
-                            if (flowerType.isInvalid) {
-                              return Container();
-                            }
-                            return ChoiceChip(
-                              label: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SvgPicture.asset(
-                                    flowerType.svg,
-                                    colorFilter: ColorFilter.mode(
-                                      context.colorScheme.onPrimaryContainer,
-                                      BlendMode.srcIn,
-                                    ),
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                  const Gap(5),
-                                  Text(flowerType.text),
-                                ],
-                              ),
-                              showCheckmark: false,
-                              selected: selected,
-                              onSelected: (isSelected) {
-                                context.read<HomeBloc>().add(
-                                      HomeFlowerTypeChanged(
-                                        FlowerType.toCode(flowerType),
+                    const SliverGap(10),
+                    SliverPadding(
+                      padding: const EdgeInsets.only(top: 10),
+                      sliver: SliverToBoxAdapter(
+                        child: Visibility(
+                          maintainAnimation: true,
+                          maintainState: true,
+                          visible: state.filteredData.isEmpty,
+                          child: Wrap(
+                            spacing: 8,
+                            children: FlowerType.values.map((flowerType) {
+                              final selected = FlowerType.fromCode(
+                                    state.choiceChipSelectedItem,
+                                  ) ==
+                                  flowerType;
+                              if (flowerType.isInvalid) {
+                                return Container();
+                              }
+                              return ChoiceChip(
+                                label: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SvgPicture.asset(
+                                      flowerType.svg,
+                                      colorFilter: ColorFilter.mode(
+                                        context.colorScheme.onPrimaryContainer,
+                                        BlendMode.srcIn,
                                       ),
-                                    );
-                              },
-                            );
-                          }).toList(),
+                                      width: 24,
+                                      height: 24,
+                                    ),
+                                    const Gap(5),
+                                    Text(flowerType.text),
+                                  ],
+                                ),
+                                showCheckmark: false,
+                                selected: selected,
+                                onSelected: (isSelected) {
+                                  context.read<HomeBloc>().add(
+                                        HomeFlowerTypeChanged(
+                                          FlowerType.toCode(flowerType),
+                                        ),
+                                      );
+                                },
+                              );
+                            }).toList(),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SliverGap(10),
-                  SliverPadding(
-                    padding: const EdgeInsets.only(top: 10),
-                    sliver: SliverGrid.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 20,
-                        childAspectRatio: 0.7,
-                        mainAxisSpacing: 10,
+                    const SliverGap(10),
+                    SliverPadding(
+                      padding: const EdgeInsets.only(top: 10),
+                      sliver: SliverGrid.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 20,
+                          childAspectRatio: 0.7,
+                          mainAxisSpacing: 10,
+                        ),
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<HomeBloc>()
+                                  .add(HomeOnFlowerTappedEvent(data[index].id));
+                            },
+                            child: FlowerCard(flower: data[index]),
+                          );
+                        },
                       ),
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            context
-                                .read<HomeBloc>()
-                                .add(HomeOnFlowerTappedEvent(data[index].id));
-                          },
-                          child: FlowerCard(flower: data[index]),
-                        );
-                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

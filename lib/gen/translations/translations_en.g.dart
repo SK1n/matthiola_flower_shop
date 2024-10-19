@@ -167,10 +167,7 @@ class _TranslationsHomeEn implements _TranslationsHomeRo {
 	@override String get emptyFavorite => 'You haven\'t added any favorite products yet.';
 	@override String get profile => 'Profile';
 	@override String get search => 'Search...';
-	@override String lastProducts({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
-		one: 'Last ${n} pieces!',
-		other: 'Last ${n} pieces!',
-	);
+	@override String lastProducts({required Object n}) => '${n} left';
 	@override String inStock({required Object value}) => '${value} items in stock';
 	@override String get cantRefreshNow => 'The list can\'t be refreshed right now. Please try again shortly.';
 	@override String get welcomeBack => 'Welcome back,';

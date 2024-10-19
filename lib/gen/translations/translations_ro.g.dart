@@ -173,10 +173,7 @@ class _TranslationsHomeRo {
 	String get emptyFavorite => 'Nu ai adăugat încă produse la favorite.';
 	String get profile => 'Profil';
 	String get search => 'Caută...';
-	String lastProducts({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ro'))(n,
-		one: 'Ultimele ${n} bucăți!',
-		other: 'Ultimele ${n} de bucăți!',
-	);
+	String lastProducts({required Object n}) => '${n} rămase';
 	String inStock({required Object value}) => '${value} bucăți în stoc.';
 	String get cantRefreshNow => 'Lista nu poate fi reîmprospătată acum. Încercați din nou în scurt timp.';
 	String get welcomeBack => 'Bine ați revenit,';

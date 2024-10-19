@@ -8,10 +8,7 @@
     "emptyFavorite": "You haven't added any favorite products yet.",
     "profile": "Profile",
     "search": "Search...",
-    "lastProducts(cardinal)": {
-        "one": "Last $n pieces!",
-        "other": "Last $n pieces!"
-    },
+    "lastProducts": "$n left",
     "inStock": "${value} items in stock",
     "cantRefreshNow": "The list can't be refreshed right now. Please try again shortly.",
     "welcomeBack": "Welcome back,"

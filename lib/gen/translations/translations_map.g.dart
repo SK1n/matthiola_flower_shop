@@ -87,10 +87,7 @@ extension on Translations {
 			case 'home.emptyFavorite': return 'Nu ai adăugat încă produse la favorite.';
 			case 'home.profile': return 'Profil';
 			case 'home.search': return 'Caută...';
-			case 'home.lastProducts': return ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ro'))(n,
-				one: 'Ultimele ${n} bucăți!',
-				other: 'Ultimele ${n} de bucăți!',
-			);
+			case 'home.lastProducts': return ({required Object n}) => '${n} rămase';
 			case 'home.inStock': return ({required Object value}) => '${value} bucăți în stoc.';
 			case 'home.cantRefreshNow': return 'Lista nu poate fi reîmprospătată acum. Încercați din nou în scurt timp.';
 			case 'home.welcomeBack': return 'Bine ați revenit,';
@@ -213,10 +210,7 @@ extension on _TranslationsEn {
 			case 'home.emptyFavorite': return 'You haven\'t added any favorite products yet.';
 			case 'home.profile': return 'Profile';
 			case 'home.search': return 'Search...';
-			case 'home.lastProducts': return ({required num n}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(n,
-				one: 'Last ${n} pieces!',
-				other: 'Last ${n} pieces!',
-			);
+			case 'home.lastProducts': return ({required Object n}) => '${n} left';
 			case 'home.inStock': return ({required Object value}) => '${value} items in stock';
 			case 'home.cantRefreshNow': return 'The list can\'t be refreshed right now. Please try again shortly.';
 			case 'home.welcomeBack': return 'Welcome back,';

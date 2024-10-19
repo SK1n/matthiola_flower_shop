@@ -68,7 +68,7 @@ class FlowerCard extends StatelessWidget {
                     if (!showBanner)
                       _BannerWidget(flower.quantity, imageSize.width),
                     Positioned(
-                      top: showBanner ? 10 : 30,
+                      top: 5,
                       right: 5,
                       child: GestureDetector(
                         onTap: () {
@@ -84,7 +84,7 @@ class FlowerCard extends StatelessWidget {
                           children: [
                             const Icon(
                               Icons.favorite,
-                              color: Colors.grey,
+                              color: Colors.black,
                             ),
                             Icon(
                               isFavorite
@@ -186,27 +186,29 @@ class _BannerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const delimiter = 100;
     return Positioned(
-      top: 0,
-      right: 0,
+      left: 5,
+      top: 5,
       child: Container(
         decoration: BoxDecoration(
           color: quantity >= delimiter
-              ? context.colorScheme.onTertiaryContainer
-              : context.colorScheme.error,
+              ? context.colorScheme.secondaryContainer
+              : context.colorScheme.errorContainer,
+          borderRadius: BorderRadius.circular(8),
         ),
-        width: width,
-        height: 25,
-        padding: const EdgeInsets.all(4),
-        child: AutoSizeText(
-          quantity >= delimiter
-              ? context.t.home.inStock(value: quantity)
-              : context.t.home.lastProducts(n: quantity),
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                fontWeight: FontWeight.w400,
-                color: context.colorScheme.onError,
-              ),
-          maxLines: 1,
+        constraints: BoxConstraints(
+          maxWidth: width / 1.2,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: AutoSizeText(
+            context.t.home.lastProducts(n: quantity),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: context.colorScheme.onErrorContainer,
+                ),
+            maxLines: 1,
+          ),
         ),
       ),
     );

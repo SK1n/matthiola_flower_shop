@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:matthiola_flower_shop/core/utils/extensions/build_context_extension.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/bloc/cart_bloc.dart';
 import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
@@ -57,6 +58,8 @@ class UserTile extends StatelessWidget {
                     context.read<HomeBloc>().add(const OnCartTappedEvent());
                   },
                   child: Badge(
+                    backgroundColor: context.colorScheme.primary,
+                    textColor: context.colorScheme.onPrimary,
                     label: Center(
                       child: Text(
                         cartItemsCount.toString(),

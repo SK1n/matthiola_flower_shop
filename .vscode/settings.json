@@ -4,5 +4,6 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit"
   },
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "svg.preview.background": "transparent"
 }

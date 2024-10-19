@@ -11,6 +11,7 @@ class App extends StatelessWidget {
       title: context.t.generic.title,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );
