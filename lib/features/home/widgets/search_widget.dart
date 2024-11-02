@@ -71,7 +71,11 @@ class __SearchBarState extends State<_SearchBar> {
     BuildContext context,
     SearchController controller,
   ) {
-    final data = [...widget.state.potData, ...widget.state.stemData];
+    final data = [
+      ...widget.state.potData,
+      ...widget.state.stemData,
+      ...widget.state.accessoriesData,
+    ];
     return List<ListTile>.generate(data.length, (int index) {
       final text = data[index].name;
       return ListTile(

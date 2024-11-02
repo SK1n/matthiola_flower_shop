@@ -167,6 +167,7 @@ class _TranslationsHomeRo {
 	String get category => 'Categorie';
 	String get threadFlower => 'Floare la fir';
 	String get potFlower => 'Floare la ghiveci';
+	String get accessory => 'Accesorii';
 	String get home => 'Acasă';
 	String get cart => 'Coş';
 	String get favorite => 'Favorite';

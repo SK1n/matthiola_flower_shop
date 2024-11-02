@@ -33,7 +33,11 @@ class FlowerDetailsBloc extends SideEffectBloc<FlowerDetailsEvent,
     emit(state.copyWith(isLoading: true));
     try {
       final homeState = homeBloc.state;
-      final items = [...homeState.potData, ...homeState.stemData];
+      final items = [
+        ...homeState.potData,
+        ...homeState.stemData,
+        ...homeState.accessoriesData
+      ];
       final item = items.firstWhere(
         (item) => item.id == event.id,
         orElse: () => FlowerEntity.empty,

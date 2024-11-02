@@ -15,6 +15,7 @@ final class AssetsConstants {
 
   static const String ADD_TO_CART = '${_ICONS}shopping_cart.svg';
   static const String POT_FLOWER = '${_ICONS}pot_flower.svg';
+  static const String FLOWER_ACCESSORIES = '${_ICONS}flower_accessories.svg';
 
   static const String STEM_FLOWER = '${_ICONS}stem_flower.svg';
 }

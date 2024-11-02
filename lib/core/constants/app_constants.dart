@@ -28,4 +28,5 @@ final class AppConstants {
 
   static const String FLOWER_TYPE_THREAD = 'home.threadFlower';
   static const String FLOWER_TYPE_POT = 'home.potFlower';
+  static const String FLOWER_TYPE_ACCESSORY = 'home.accessory';
 }

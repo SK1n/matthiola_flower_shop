@@ -71,10 +71,17 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
             (flower) => FlowerType.fromCode(flower.type) == FlowerType.pot,
           )
           .toList();
+      final accessoriesData = data
+          .where(
+            (flower) =>
+                FlowerType.fromCode(flower.type) == FlowerType.accessory,
+          )
+          .toList();
       emit(
         state.copyWith(
           stemData: stemData,
           potData: potData,
+          accessoriesData: accessoriesData,
         ),
       );
     } on Exception catch (e) {
@@ -100,7 +107,11 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     if (query.isEmpty) {
       return emit(state.copyWith(filteredData: []));
     }
-    final data = [...state.potData, ...state.stemData];
+    final data = [
+      ...state.potData,
+      ...state.stemData,
+      ...state.accessoriesData,
+    ];
     final queryData = extractAllSorted<FlowerEntity>(
       query: query,
       choices: data,

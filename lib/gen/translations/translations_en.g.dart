@@ -161,6 +161,7 @@ class _TranslationsHomeEn implements _TranslationsHomeRo {
 	@override String get category => 'Category';
 	@override String get threadFlower => 'Thread Flower';
 	@override String get potFlower => 'Potted Flower';
+	@override String get accessory => 'Accessories';
 	@override String get home => 'Home';
 	@override String get cart => 'Cart';
 	@override String get favorite => 'Favorites';

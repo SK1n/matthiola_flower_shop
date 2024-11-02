@@ -6,6 +6,7 @@ class HomeState extends Equatable {
     this.filteredData = const [],
     this.potData = const [],
     this.stemData = const [],
+    this.accessoriesData = const [],
     this.choiceChipSelectedItem = 0,
     this.query = '',
     this.user = UserEntity.empty,
@@ -14,6 +15,7 @@ class HomeState extends Equatable {
   final bool isLoading;
   final List<FlowerEntity> stemData;
   final List<FlowerEntity> potData;
+  final List<FlowerEntity> accessoriesData;
   final List<FlowerEntity> filteredData;
   final int choiceChipSelectedItem;
   final String query;
@@ -24,6 +26,7 @@ class HomeState extends Equatable {
         isLoading,
         stemData,
         potData,
+        accessoriesData,
         filteredData,
         choiceChipSelectedItem,
         query,
@@ -34,6 +37,7 @@ class HomeState extends Equatable {
     bool? isLoading,
     List<FlowerEntity>? stemData,
     List<FlowerEntity>? potData,
+    List<FlowerEntity>? accessoriesData,
     List<FlowerEntity>? filteredData,
     int? choiceChipSelectedItem,
     String? query,
@@ -43,6 +47,7 @@ class HomeState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       stemData: stemData ?? this.stemData,
       potData: potData ?? this.potData,
+      accessoriesData: accessoriesData ?? this.accessoriesData,
       filteredData: filteredData ?? this.filteredData,
       choiceChipSelectedItem:
           choiceChipSelectedItem ?? this.choiceChipSelectedItem,

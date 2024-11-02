@@ -42,7 +42,9 @@ class HomeScreen extends StatelessWidget {
           } else {
             data = state.choiceChipSelectedItem == 0
                 ? state.stemData
-                : state.potData;
+                : state.choiceChipSelectedItem == 1
+                    ? state.potData
+                    : state.accessoriesData;
           }
           return SafeArea(
             child: Padding(

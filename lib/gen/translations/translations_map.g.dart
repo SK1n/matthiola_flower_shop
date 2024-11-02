@@ -81,6 +81,7 @@ extension on Translations {
 			case 'home.category': return 'Categorie';
 			case 'home.threadFlower': return 'Floare la fir';
 			case 'home.potFlower': return 'Floare la ghiveci';
+			case 'home.accessory': return 'Accesorii';
 			case 'home.home': return 'Acasă';
 			case 'home.cart': return 'Coş';
 			case 'home.favorite': return 'Favorite';
@@ -204,6 +205,7 @@ extension on _TranslationsEn {
 			case 'home.category': return 'Category';
 			case 'home.threadFlower': return 'Thread Flower';
 			case 'home.potFlower': return 'Potted Flower';
+			case 'home.accessory': return 'Accessories';
 			case 'home.home': return 'Home';
 			case 'home.cart': return 'Cart';
 			case 'home.favorite': return 'Favorites';
