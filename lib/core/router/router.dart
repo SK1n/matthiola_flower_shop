@@ -22,6 +22,7 @@ import 'package:matthiola_flower_shop/features/home_scaffold/use_cases/home_scaf
 import 'package:matthiola_flower_shop/features/login/screen/login_screen.dart';
 import 'package:matthiola_flower_shop/features/login/use_cases/bloc/login_bloc.dart';
 import 'package:matthiola_flower_shop/features/login/use_cases/cubit/login_form_cubit.dart';
+import 'package:matthiola_flower_shop/features/profile/use_cases/profile_bloc.dart';
 import 'package:matthiola_flower_shop/features/splash/screen/splash_screen.dart';
 import 'package:matthiola_flower_shop/features/splash/use_cases/bloc/splash_bloc.dart';
 
@@ -134,6 +135,9 @@ class HomeScaffoldRoute extends GoRouteData {
         ),
         BlocProvider.value(
           value: getIt<FavoriteBloc>(),
+        ),
+        BlocProvider.value(
+          value: getIt<ProfileBloc>(),
         ),
       ],
       child: const HomeScaffoldScreen(),

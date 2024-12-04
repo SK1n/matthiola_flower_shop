@@ -13,6 +13,7 @@ import 'package:matthiola_flower_shop/domain/models/flower/flower_entity.dart';
 import 'package:matthiola_flower_shop/domain/models/user/user_entity.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_auth_repository.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_repository.dart';
+import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'home_event.dart';
@@ -180,6 +181,8 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     if (result.isError()) {
       return produceSideEffect(BaseCommand.failure(result.tryGetError()!));
     }
+    produceSideEffect(BaseCommand.success(t.profile.accountDeleted));
+    add(const SignOutEvent());
     emit(state.copyWith(isLoading: false));
   }
 

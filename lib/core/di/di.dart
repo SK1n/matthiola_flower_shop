@@ -22,6 +22,7 @@ import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
 import 'package:matthiola_flower_shop/features/home_scaffold/use_cases/home_scaffold_bloc.dart';
 import 'package:matthiola_flower_shop/features/login/use_cases/bloc/login_bloc.dart';
 import 'package:matthiola_flower_shop/features/login/use_cases/cubit/login_form_cubit.dart';
+import 'package:matthiola_flower_shop/features/profile/use_cases/profile_bloc.dart';
 import 'package:matthiola_flower_shop/features/splash/use_cases/bloc/splash_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -130,7 +131,8 @@ void _configureBlocs() {
         getIt<ISharedPrefsRepository>(),
         getIt<HomeBloc>(),
       ),
-    );
+    )
+    ..registerLazySingleton<ProfileBloc>(ProfileBloc.new);
 }
 
 void configureDi() {

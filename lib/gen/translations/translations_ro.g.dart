@@ -192,6 +192,7 @@ class _TranslationsProfileRo {
 	String get deleteMessage => 'Ești sigur că vrei să ștergi definitiv contul și toate datele asociate?';
 	String get confirmDelete => 'Confirmă ștergerea';
 	String get cancelDelete => 'Anulează';
+	String get accountDeleted => 'Acest cont a fost șters';
 }
 
 // Path: reset_password

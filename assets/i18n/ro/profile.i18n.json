@@ -3,5 +3,6 @@
     "deleteAccount": "Șterge contul",
     "deleteMessage": "Ești sigur că vrei să ștergi definitiv contul și toate datele asociate?",
     "confirmDelete": "Confirmă ștergerea",
-    "cancelDelete": "Anulează"
+    "cancelDelete": "Anulează",
+    "accountDeleted": "Acest cont a fost șters"
 }

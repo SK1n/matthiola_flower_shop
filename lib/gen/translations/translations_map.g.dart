@@ -97,6 +97,7 @@ extension on Translations {
 			case 'profile.deleteMessage': return 'Ești sigur că vrei să ștergi definitiv contul și toate datele asociate?';
 			case 'profile.confirmDelete': return 'Confirmă ștergerea';
 			case 'profile.cancelDelete': return 'Anulează';
+			case 'profile.accountDeleted': return 'Acest cont a fost șters';
 			case 'reset_password.title': return 'Resetează parola';
 			case 'reset_password.emailLabel': return 'Introduceți adresa de email';
 			case 'reset_password.emailHint': return 'De exemplu, numeletau@gmail.com';
@@ -221,6 +222,7 @@ extension on _TranslationsEn {
 			case 'profile.deleteMessage': return 'Are you sure you want to permanently delete your account and all associated data?';
 			case 'profile.confirmDelete': return 'Confirm deletion';
 			case 'profile.cancelDelete': return 'Cancel';
+			case 'profile.accountDeleted': return 'This account has been deleted';
 			case 'reset_password.title': return 'Reset your password';
 			case 'reset_password.emailSent': return ({required Object value}) => 'An email has been sent to reset the password to ${value}';
 			case 'reset_password.emailFormat': return 'Email format';

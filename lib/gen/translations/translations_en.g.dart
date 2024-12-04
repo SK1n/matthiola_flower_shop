@@ -186,6 +186,7 @@ class _TranslationsProfileEn implements _TranslationsProfileRo {
 	@override String get deleteMessage => 'Are you sure you want to permanently delete your account and all associated data?';
 	@override String get confirmDelete => 'Confirm deletion';
 	@override String get cancelDelete => 'Cancel';
+	@override String get accountDeleted => 'This account has been deleted';
 }
 
 // Path: reset_password

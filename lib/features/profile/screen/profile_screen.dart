@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:matthiola_flower_shop/core/di/di.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/extensions/build_context_extension.dart';
 import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
 import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
 import 'package:matthiola_flower_shop/features/home_scaffold/use_cases/home_scaffold_bloc.dart';
+import 'package:matthiola_flower_shop/features/profile/use_cases/profile_bloc.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:side_effect_cubit/side_effect_cubit.dart';
 
@@ -18,11 +20,12 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSideEffectListener<HomeBloc, BaseCommand>(
-      listener: _sideEffectListener,
-      child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          return Scaffold(
+    return BlocSideEffectConsumer<HomeBloc, HomeState, BaseCommand>(
+      sideEffectListener: _sideEffectListener,
+      builder: (context, state) {
+        return BlocSideEffectConsumer<ProfileBloc, ProfileState, BaseCommand>(
+          sideEffectListener: _profileSideEffectListener,
+          builder: (context, profileState) => Scaffold(
             appBar: AppBar(
               title: Row(
                 children: [
@@ -91,11 +94,31 @@ class ProfileScreen extends StatelessWidget {
                     child: Text(context.t.profile.logOut),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: OutlinedButton(
+                    onPressed: () {
+                      context
+                          .read<ProfileBloc>()
+                          .add(const OpenDeleteDialogEvent());
+                    },
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 40),
+                      backgroundColor: context.colorScheme.error,
+                    ),
+                    child: Text(
+                      context.t.profile.deleteAccount,
+                      style: TextStyle(
+                        color: context.colorScheme.onErrorContainer,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

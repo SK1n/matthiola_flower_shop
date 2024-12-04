@@ -3,5 +3,6 @@
     "deleteAccount": "Delete account",
     "deleteMessage": "Are you sure you want to permanently delete your account and all associated data?",
     "confirmDelete": "Confirm deletion",
-    "cancelDelete": "Cancel"
+    "cancelDelete": "Cancel",
+    "accountDeleted": "This account has been deleted"
 }
