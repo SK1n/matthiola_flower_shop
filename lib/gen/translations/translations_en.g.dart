@@ -149,6 +149,7 @@ class _TranslationsGenericEn implements _TranslationsGenericRo {
 	@override String get required => 'This field is required';
 	@override String price({required Object value}) => '${value} RON';
 	@override String get addedToCart => 'Product added to cart';
+	@override late final _TranslationsGenericAnonymousEn anonymous = _TranslationsGenericAnonymousEn._(_root);
 }
 
 // Path: home
@@ -212,6 +213,7 @@ class _TranslationsSignInEn implements _TranslationsSignInRo {
 
 	// Translations
 	@override String get title => 'Welcome back';
+	@override String get appBarTitle => 'Sign in / Register';
 	@override String get emailLabel => 'Enter your email address';
 	@override String get emailHint => 'E.g. yourname@gmail.com';
 	@override String get emailPrefix => 'Email';
@@ -267,4 +269,16 @@ class _TranslationsCartRemoveDialogEn implements _TranslationsCartRemoveDialogRo
 	@override String get content => 'Are you sure you want to remove this product from your cart?';
 	@override String get cancel => 'Cancel';
 	@override String get remove => 'Remove';
+}
+
+// Path: generic.anonymous
+class _TranslationsGenericAnonymousEn implements _TranslationsGenericAnonymousRo {
+	_TranslationsGenericAnonymousEn._(this._root);
+
+	@override final _TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get favorites => 'Please log in or create an account to save your favorite products.';
+	@override String get profil => 'Please log in or create an account to view your details.';
+	@override String get button => 'Sign in / Register';
 }

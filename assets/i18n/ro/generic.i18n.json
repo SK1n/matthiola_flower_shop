@@ -5,5 +5,10 @@
     "or": "Sau",
     "required": "Acest câmp este obligatoriu",
     "price": "$value RON",
-    "addedToCart": "Produsul a fost adăugat in coș"
+    "addedToCart": "Produsul a fost adăugat in coș",
+    "anonymous": {
+        "favorites": "Autentificăte sau creează un cont pentru a salva produsele favorite.",
+        "profil": "Conectează-te sau creează un cont pentru a-ți vedea detaliile.",
+        "button": "Intră în cont / Înregistrați-vă"
+    }
 }

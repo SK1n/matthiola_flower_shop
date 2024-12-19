@@ -36,3 +36,7 @@ class FavoritePressedEvent extends FavoriteEvent {
   @override
   List<Object> get props => [id];
 }
+
+class LoginEvent extends FavoriteEvent {
+  const LoginEvent();
+}

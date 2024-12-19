@@ -22,6 +22,7 @@ class FavoriteBloc
     on<DeleteFavoriteEvent>(_onDeleteFavoriteEvent);
     on<FavoritePressedEvent>(_onFavoritePressedEvent);
     on<_SubscribeToUserEvent>(_onSubscribeToUserEvent);
+    on<LoginEvent>(_onLoginEvent);
     add(const _SubscribeToUserEvent());
     add(const _GetFavoriteEvent());
   }
@@ -44,6 +45,12 @@ class FavoriteBloc
     Emitter<FavoriteState> emit,
   ) {
     emit(state.copyWith(isLoading: true));
+    final homeBloc = _homeBloc.state;
+    if (homeBloc.isAnonymous) {
+      emit(state.copyWith(isAnonymous: true, isLoading: false));
+      return;
+    }
+    emit(state.copyWith(isAnonymous: false));
     final uid = _homeBloc.state.user.uid;
     final result =
         repository.readMapList(SharedPrefsConstants.FLOWERS_KEY(uid));
@@ -102,5 +109,12 @@ class FavoriteBloc
     Emitter<FavoriteState> emit,
   ) async {
     produceSideEffect(BaseCommand.go(FlowerDetailsRoute(event.id)));
+  }
+
+  void _onLoginEvent(
+    LoginEvent event,
+    Emitter<FavoriteState> emit,
+  ) {
+    produceSideEffect(BaseCommand.go(const LoginRoute()));
   }
 }

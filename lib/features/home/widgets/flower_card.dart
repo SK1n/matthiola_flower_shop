@@ -13,6 +13,7 @@ import 'package:matthiola_flower_shop/domain/models/cart/cart_entity.dart';
 import 'package:matthiola_flower_shop/domain/models/flower/flower_entity.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/bloc/cart_bloc.dart';
 import 'package:matthiola_flower_shop/features/favorites/use_cases/favorite_bloc.dart';
+import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:octo_image/octo_image.dart';
 
@@ -30,6 +31,8 @@ class FlowerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isFavorite =
         context.watch<FavoriteBloc>().state.items.contains(flower);
+    final isAnonymous =
+        context.select((HomeBloc bloc) => bloc.state.isAnonymous);
     return LayoutBuilder(
       builder: (context, constraints) {
         final imageSize =
@@ -67,35 +70,38 @@ class FlowerCard extends StatelessWidget {
                     ),
                     if (!showBanner)
                       _BannerWidget(flower.quantity, imageSize.width),
-                    Positioned(
-                      top: 5,
-                      right: 5,
-                      child: GestureDetector(
-                        onTap: () {
-                          isFavorite
-                              ? context
-                                  .read<FavoriteBloc>()
-                                  .add(DeleteFavoriteEvent(flower))
-                              : context
-                                  .read<FavoriteBloc>()
-                                  .add(SaveFavoriteEvent(flower));
-                        },
-                        child: Stack(
-                          children: [
-                            const Icon(
-                              Icons.favorite,
-                              color: Colors.black,
-                            ),
-                            Icon(
-                              isFavorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_outline,
-                              color: context.colorScheme.primary,
-                            ),
-                          ],
+                    if (isAnonymous)
+                      const SizedBox.shrink()
+                    else
+                      Positioned(
+                        top: 5,
+                        right: 5,
+                        child: GestureDetector(
+                          onTap: () {
+                            isFavorite
+                                ? context
+                                    .read<FavoriteBloc>()
+                                    .add(DeleteFavoriteEvent(flower))
+                                : context
+                                    .read<FavoriteBloc>()
+                                    .add(SaveFavoriteEvent(flower));
+                          },
+                          child: Stack(
+                            children: [
+                              const Icon(
+                                Icons.favorite,
+                                color: Colors.black,
+                              ),
+                              Icon(
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline,
+                                color: context.colorScheme.primary,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),

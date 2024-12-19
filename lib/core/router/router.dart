@@ -195,6 +195,12 @@ class CartRoute extends GoRouteData {
       child: const CartScreen(),
     );
   }
+
+  @override
+  FutureOr<bool> onExit(BuildContext context, GoRouterState state) {
+    getIt.resetLazySingleton<CartFormCubit>();
+    return super.onExit(context, state);
+  }
 }
 
 final class _Routes {

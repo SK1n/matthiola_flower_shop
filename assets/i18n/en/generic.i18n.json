@@ -5,5 +5,10 @@
     "or": "Or",
     "required": "This field is required",
     "price": "$value RON",
-    "addedToCart": "Product added to cart"
+    "addedToCart": "Product added to cart",
+    "anonymous": {
+        "favorites": "Please log in or create an account to save your favorite products.",
+        "profil": "Please log in or create an account to view your details.",
+        "button": "Sign in / Register"
+    }
 }

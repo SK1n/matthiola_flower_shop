@@ -1,5 +1,6 @@
 {
     "title": "Welcome back",
+    "appBarTitle": "Sign in / Register",
     "emailLabel": "Enter your email address",
     "emailHint": "E.g. yourname@gmail.com",
     "emailPrefix": "Email",

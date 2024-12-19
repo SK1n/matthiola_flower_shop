@@ -49,7 +49,7 @@ class LoginBloc extends SideEffectBloc<LoginEvent, LoginState, BaseCommand> {
       if (result.isError()) {
         return produceSideEffect(BaseCommand.failure(result.tryGetError()!));
       }
-      produceSideEffect(BaseCommand.go(const HomeScaffoldRoute()));
+      produceSideEffect(BaseCommand.pop());
     } catch (e) {
       produceSideEffect(BaseCommand.failure(Failure(error: e.toString())));
     } finally {

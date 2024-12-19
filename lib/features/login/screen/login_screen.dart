@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/extensions/build_context_extension.dart';
@@ -27,6 +28,9 @@ class LoginScreen extends StatelessWidget {
     return BlocSideEffectListener<LoginBloc, BaseCommand>(
       listener: _sideEffectListener,
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(context.t.sign_in.appBarTitle),
+        ),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),

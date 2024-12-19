@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
@@ -37,6 +38,9 @@ class FavoriteScreen extends StatelessWidget {
         ),
         body: BlocBuilder<FavoriteBloc, FavoriteState>(
           builder: (context, state) {
+            if (state.isAnonymous) {
+              return _buildAnonymous(context);
+            }
             if (state.items.isEmpty) {
               return NotFoundWidget(
                 message: context.t.home.emptyFavorite,
@@ -77,4 +81,30 @@ class FavoriteScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildAnonymous(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.all(8),
+    child: Column(
+      children: [
+        const Gap(20),
+        Text(
+          context.t.generic.anonymous.favorites,
+          style: context.textTheme.titleLarge,
+          textAlign: TextAlign.center,
+        ),
+        const Gap(20),
+        FilledButton(
+          onPressed: () {
+            context.read<FavoriteBloc>().add(const LoginEvent());
+          },
+          style: FilledButton.styleFrom(
+            minimumSize: const Size(double.infinity, 40),
+          ),
+          child: Text(context.t.generic.anonymous.button),
+        ),
+      ],
+    ),
+  );
 }

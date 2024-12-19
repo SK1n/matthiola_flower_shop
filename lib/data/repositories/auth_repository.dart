@@ -30,6 +30,18 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
+  Future<Result<Unit, Failure>> loginAnonymous() async {
+    try {
+      await auth.signInAnonymously();
+      return const Result.success(unit);
+    } on FirebaseAuthException catch (e) {
+      return Result.error(Failure(code: e.code));
+    } catch (e) {
+      return Result.error(Failure(error: e));
+    }
+  }
+
+  @override
   Future<Result<Unit, Failure>> signUpWithEmail(
     CreateAccountRequest request,
   ) async {
@@ -66,6 +78,17 @@ class AuthRepository implements IAuthRepository {
     try {
       if (!isLoggedIn()) {
         return const Result.error(Failure(code: ErrorCodes.unauthenticated));
+      }
+      if (auth.currentUser?.isAnonymous ?? false) {
+        return Result.success(
+          UserEntity(
+            address: '',
+            displayName: '',
+            email: '',
+            phone: '',
+            uid: auth.currentUser!.uid,
+          ),
+        );
       }
       final result = await firestore
           .doc(FirestoreConstants.USERS_DOCUMENT(auth.currentUser!.uid))
@@ -118,4 +141,7 @@ class AuthRepository implements IAuthRepository {
       yield Result.success(result.tryGetSuccess()!);
     }
   }
+
+  @override
+  bool get isAnonymous => auth.currentUser?.isAnonymous ?? false;
 }

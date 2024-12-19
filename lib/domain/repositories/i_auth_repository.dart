@@ -13,5 +13,7 @@ abstract class IAuthRepository {
   Future<void> signOut();
   Future<Result<Unit, Failure>> deleteAccount();
   Stream<Result<UserEntity, Failure>> userSubscription();
+  Future<Result<Unit, Failure>> loginAnonymous();
   bool isLoggedIn();
+  bool get isAnonymous;
 }

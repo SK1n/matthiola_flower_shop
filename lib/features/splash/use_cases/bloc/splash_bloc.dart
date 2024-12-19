@@ -18,13 +18,17 @@ class SplashBloc extends SideEffectBloc<SplashEvent, SplashState, BaseCommand> {
 
   final IAuthRepository auth;
 
-  void _onInitialEvent(
+  Future<void> _onInitialEvent(
     _InitialEvent event,
     Emitter<SplashState> emit,
-  ) {
+  ) async {
     if (auth.isLoggedIn()) {
       return produceSideEffect(BaseCommand.go(const HomeScaffoldRoute()));
     }
-    produceSideEffect(BaseCommand.go(const LoginRoute()));
+    final result = await auth.loginAnonymous();
+    if (result.isError()) {
+      produceSideEffect(BaseCommand.failure(result.tryGetError()!));
+    }
+    produceSideEffect(BaseCommand.go(const HomeScaffoldRoute()));
   }
 }

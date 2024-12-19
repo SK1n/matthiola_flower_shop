@@ -51,6 +51,8 @@ class CartScreen extends StatelessWidget {
               if (state.isLoading) return const LoadingWidget();
               if (state.items.isEmpty) return const EmptyCart();
               final totalPrice = state.totalPrice.toStringAsFixed(2);
+              final formState =
+                  context.select((CartFormCubit cubit) => cubit.state);
               return Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
@@ -102,11 +104,13 @@ class CartScreen extends StatelessWidget {
                           const _InputAddress(),
                           const Gap(10),
                           FilledButton(
-                            onPressed: () {
-                              context
-                                  .read<CartBloc>()
-                                  .add(const SubmitCartEvent());
-                            },
+                            onPressed: formState.isNotValid
+                                ? null
+                                : () {
+                                    context
+                                        .read<CartBloc>()
+                                        .add(const SubmitCartEvent());
+                                  },
                             style: FilledButton.styleFrom(
                               minimumSize: const Size(double.infinity, 50),
                               shape: RoundedRectangleBorder(

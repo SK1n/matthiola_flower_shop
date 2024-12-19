@@ -1,6 +1,6 @@
 part of 'cart_form_cubit.dart';
 
-class CartFormState extends Equatable {
+class CartFormState extends Equatable with FormzMixin {
   CartFormState({
     this.email = const EmailValidator.pure(),
     this.username = const RequiredValidator.pure(),
@@ -29,6 +29,10 @@ class CartFormState extends Equatable {
   final TextEditingController phoneController;
   final TextEditingController usernameController;
   final bool isLoading;
+
+  @override
+  List<FormzInput<dynamic, dynamic>> get inputs =>
+      [address, email, phone, username];
 
   @override
   List<Object> get props => [

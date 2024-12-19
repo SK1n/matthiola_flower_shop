@@ -3,6 +3,7 @@ part of 'home_bloc.dart';
 class HomeState extends Equatable {
   const HomeState({
     this.isLoading = false,
+    this.isAnonymous = false,
     this.filteredData = const [],
     this.potData = const [],
     this.stemData = const [],
@@ -13,6 +14,7 @@ class HomeState extends Equatable {
   });
 
   final bool isLoading;
+  final bool isAnonymous;
   final List<FlowerEntity> stemData;
   final List<FlowerEntity> potData;
   final List<FlowerEntity> accessoriesData;
@@ -30,11 +32,13 @@ class HomeState extends Equatable {
         filteredData,
         choiceChipSelectedItem,
         query,
+        isAnonymous,
         user,
       ];
 
   HomeState copyWith({
     bool? isLoading,
+    bool? isAnonymous,
     List<FlowerEntity>? stemData,
     List<FlowerEntity>? potData,
     List<FlowerEntity>? accessoriesData,
@@ -45,6 +49,7 @@ class HomeState extends Equatable {
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
+      isAnonymous: isAnonymous ?? this.isAnonymous,
       stemData: stemData ?? this.stemData,
       potData: potData ?? this.potData,
       accessoriesData: accessoriesData ?? this.accessoriesData,

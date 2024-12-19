@@ -13,13 +13,6 @@ void _sideEffectListener(BuildContext context, BaseCommand command) {
       switch (route.runtimeType) {
         case FlowerDetailsRoute:
           (route as FlowerDetailsRoute).go(context);
-        case LoginRoute:
-          {
-            context
-                .read<HomeScaffoldBloc>()
-                .add(const HomeScaffoldOnDestinationSelectedEvent(1));
-            (route as LoginRoute).pushReplacement(context);
-          }
       }
     },
   );
@@ -32,6 +25,12 @@ void _profileSideEffectListener(BuildContext context, BaseCommand command) {
     },
     success: (success) {
       return SnackbarUtil.showSuccessSnackbar(context, success);
+    },
+    go: (route) {
+      switch (route.runtimeType) {
+        case LoginRoute:
+          (route as LoginRoute).push<void>(context);
+      }
     },
     pop: ({data}) => context.pop(),
     showDialog: ([data]) {

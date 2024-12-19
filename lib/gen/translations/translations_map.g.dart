@@ -78,6 +78,9 @@ extension on Translations {
 			case 'generic.required': return 'Acest câmp este obligatoriu';
 			case 'generic.price': return ({required Object value}) => '${value} RON';
 			case 'generic.addedToCart': return 'Produsul a fost adăugat in coș';
+			case 'generic.anonymous.favorites': return 'Autentificăte sau creează un cont pentru a salva produsele favorite.';
+			case 'generic.anonymous.profil': return 'Conectează-te sau creează un cont pentru a-ți vedea detaliile.';
+			case 'generic.anonymous.button': return 'Intră în cont / Înregistrați-vă';
 			case 'home.category': return 'Categorie';
 			case 'home.threadFlower': return 'Floare la fir';
 			case 'home.potFlower': return 'Floare la ghiveci';
@@ -105,6 +108,7 @@ extension on Translations {
 			case 'reset_password.reset': return 'Resetează parola';
 			case 'reset_password.emailSent': return ({required Object value}) => 'Un email a fost trimis pentru a reseta parola la adresa de mail: ${value}';
 			case 'sign_in.title': return 'Bine ați revenit';
+			case 'sign_in.appBarTitle': return 'Intră în cont / Înregistrați-vă';
 			case 'sign_in.emailLabel': return 'Introduceți adresa dvs. de email';
 			case 'sign_in.emailHint': return 'Ex: numele.tau@gmail.com';
 			case 'sign_in.emailPrefix': return 'Email';
@@ -203,6 +207,9 @@ extension on _TranslationsEn {
 			case 'generic.required': return 'This field is required';
 			case 'generic.price': return ({required Object value}) => '${value} RON';
 			case 'generic.addedToCart': return 'Product added to cart';
+			case 'generic.anonymous.favorites': return 'Please log in or create an account to save your favorite products.';
+			case 'generic.anonymous.profil': return 'Please log in or create an account to view your details.';
+			case 'generic.anonymous.button': return 'Sign in / Register';
 			case 'home.category': return 'Category';
 			case 'home.threadFlower': return 'Thread Flower';
 			case 'home.potFlower': return 'Potted Flower';
@@ -230,6 +237,7 @@ extension on _TranslationsEn {
 			case 'reset_password.reset': return 'Reset your password';
 			case 'reset_password.emailHint': return 'E.g. yourname@gmail.com';
 			case 'sign_in.title': return 'Welcome back';
+			case 'sign_in.appBarTitle': return 'Sign in / Register';
 			case 'sign_in.emailLabel': return 'Enter your email address';
 			case 'sign_in.emailHint': return 'E.g. yourname@gmail.com';
 			case 'sign_in.emailPrefix': return 'Email';

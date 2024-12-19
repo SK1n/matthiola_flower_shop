@@ -7,6 +7,10 @@ sealed class ProfileEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class LoginEvent extends ProfileEvent {
+  const LoginEvent();
+}
+
 class OpenDeleteDialogEvent extends ProfileEvent {
   const OpenDeleteDialogEvent();
 }

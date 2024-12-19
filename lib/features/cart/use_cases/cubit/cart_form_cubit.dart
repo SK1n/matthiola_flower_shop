@@ -20,6 +20,16 @@ class CartFormCubit extends Cubit<CartFormState> {
 
   Future<void> _initialEvent() async {
     try {
+      if (auth.isAnonymous) {
+        emit(
+          state.copyWith(
+            address: const RequiredValidator.pure(),
+            phone: const PhoneValidator.pure(),
+            email: const EmailValidator.pure(),
+            username: const RequiredValidator.pure(),
+          ),
+        );
+      }
       emit(state.copyWith(isLoading: true));
       final result = await auth.getUserData();
       if (result.isError()) return;
@@ -63,25 +73,5 @@ class CartFormCubit extends Cubit<CartFormState> {
   void usernameChanged(String value) {
     final username = RequiredValidator.dirty(value);
     emit(state.copyWith(username: username));
-  }
-
-  bool isValid() {
-    final form = <FormzInput<dynamic, dynamic>>[
-      state.email,
-      state.phone,
-      state.address,
-      state.username,
-    ];
-
-    emit(
-      state.copyWith(
-        email: EmailValidator.dirty(state.email.value),
-        address: RequiredValidator.dirty(state.address.value),
-        phone: PhoneValidator.dirty(state.phone.value),
-        username: RequiredValidator.dirty(state.username.value),
-      ),
-    );
-
-    return Formz.validate(form);
   }
 }

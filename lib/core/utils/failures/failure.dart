@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 import 'package:matthiola_flower_shop/core/constants/error_codes.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 
@@ -8,7 +9,10 @@ class Failure extends Equatable implements Exception {
   final String code;
   final Object error;
 
-  String get message => _getCode();
+  String get message {
+    Logger().e(_getCode());
+    return _getCode();
+  }
 
   @override
   List<Object> get props => [error, code];

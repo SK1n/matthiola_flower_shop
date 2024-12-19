@@ -19,38 +19,45 @@ class UserTile extends StatelessWidget {
           width: double.infinity,
           child: Row(
             children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: AutoSizeText(
-                          context.t.home.welcomeBack,
-                          style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                          maxFontSize: 30,
-                          minFontSize: 10,
+              if (state.isAnonymous)
+                const Spacer()
+              else
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: AutoSizeText(
+                            context.t.home.welcomeBack,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                            maxFontSize: 30,
+                            minFontSize: 10,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: AutoSizeText(
-                          state.user.displayName,
-                          style:
-                              Theme.of(context).textTheme.labelMedium!.copyWith(
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                          maxFontSize: 20,
-                          minFontSize: 10,
+                        Expanded(
+                          child: AutoSizeText(
+                            state.user.displayName,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.w300,
+                                ),
+                            maxFontSize: 20,
+                            minFontSize: 10,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: GestureDetector(

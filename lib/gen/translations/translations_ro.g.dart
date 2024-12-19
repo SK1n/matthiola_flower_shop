@@ -155,6 +155,7 @@ class _TranslationsGenericRo {
 	String get required => 'Acest câmp este obligatoriu';
 	String price({required Object value}) => '${value} RON';
 	String get addedToCart => 'Produsul a fost adăugat in coș';
+	late final _TranslationsGenericAnonymousRo anonymous = _TranslationsGenericAnonymousRo._(_root);
 }
 
 // Path: home
@@ -218,6 +219,7 @@ class _TranslationsSignInRo {
 
 	// Translations
 	String get title => 'Bine ați revenit';
+	String get appBarTitle => 'Intră în cont / Înregistrați-vă';
 	String get emailLabel => 'Introduceți adresa dvs. de email';
 	String get emailHint => 'Ex: numele.tau@gmail.com';
 	String get emailPrefix => 'Email';
@@ -273,4 +275,16 @@ class _TranslationsCartRemoveDialogRo {
 	String get content => 'Ești sigur că vrei să scoți acest produs din coș?';
 	String get cancel => 'Anulează';
 	String get remove => 'Scoate';
+}
+
+// Path: generic.anonymous
+class _TranslationsGenericAnonymousRo {
+	_TranslationsGenericAnonymousRo._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get favorites => 'Autentificăte sau creează un cont pentru a salva produsele favorite.';
+	String get profil => 'Conectează-te sau creează un cont pentru a-ți vedea detaliile.';
+	String get button => 'Intră în cont / Înregistrați-vă';
 }

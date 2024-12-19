@@ -13,27 +13,30 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           (element) => element.id == flower.id,
           orElse: () => FlowerEntity.empty,
         );
+        final isAnonymous = state.isAnonymous;
 
         final isFavorite = item != FlowerEntity.empty;
         return AppBar(
           title: Text(flower.name),
-          actions: [
-            IconButton(
-              onPressed: () {
-                isFavorite
-                    ? context
-                        .read<FavoriteBloc>()
-                        .add(DeleteFavoriteEvent(item))
-                    : context
-                        .read<FavoriteBloc>()
-                        .add(SaveFavoriteEvent(flower));
-              },
-              icon: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_outline,
-                color: context.colorScheme.primary,
-              ),
-            ),
-          ],
+          actions: isAnonymous
+              ? null
+              : [
+                  IconButton(
+                    onPressed: () {
+                      isFavorite
+                          ? context
+                              .read<FavoriteBloc>()
+                              .add(DeleteFavoriteEvent(item))
+                          : context
+                              .read<FavoriteBloc>()
+                              .add(SaveFavoriteEvent(flower));
+                    },
+                    icon: Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_outline,
+                      color: context.colorScheme.primary,
+                    ),
+                  ),
+                ],
         );
       },
     );

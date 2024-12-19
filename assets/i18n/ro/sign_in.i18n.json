@@ -1,5 +1,6 @@
 {
     "title": "Bine ați revenit",
+    "appBarTitle": "Intră în cont / Înregistrați-vă",
     "emailLabel": "Introduceți adresa dvs. de email",
     "emailHint": "Ex: numele.tau@gmail.com",
     "emailPrefix": "Email",

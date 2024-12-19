@@ -16,6 +16,7 @@ import 'package:matthiola_flower_shop/domain/models/flower/flower_entity.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/bloc/cart_bloc.dart';
 import 'package:matthiola_flower_shop/features/favorites/use_cases/favorite_bloc.dart';
 import 'package:matthiola_flower_shop/features/flower_details/use_cases/flower_details_bloc.dart';
+import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:matthiola_flower_shop/widgets/loading_widget.dart';
 import 'package:octo_image/octo_image.dart';

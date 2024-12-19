@@ -50,7 +50,7 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
       await Future<void>.delayed(const Duration(milliseconds: 500));
       return emit(state.copyWith(isLoading: false));
     }
-    Timer(const Duration(minutes: 2), () {
+    Timer(const Duration(seconds: 2), () {
       _canRefresh = true;
     });
 
@@ -151,14 +151,16 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     if (result.isError()) {
       return produceSideEffect(BaseCommand.failure(result.tryGetError()!));
     }
-    emit(state.copyWith(user: result.tryGetSuccess()));
+    final user = result.tryGetSuccess()!;
+    emit(state.copyWith(user: user, isAnonymous: user.email.isEmpty));
     await emit.onEach(
       auth.userSubscription(),
       onData: (result) {
         if (result.isError()) {
           return produceSideEffect(BaseCommand.failure(result.tryGetError()!));
         } else {
-          emit(state.copyWith(user: result.tryGetSuccess()));
+          final user = result.tryGetSuccess()!;
+          emit(state.copyWith(user: user, isAnonymous: user.email.isEmpty));
         }
       },
     );
