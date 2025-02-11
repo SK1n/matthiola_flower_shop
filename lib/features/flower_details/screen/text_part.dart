@@ -4,124 +4,117 @@ class _TextPart extends StatelessWidget {
   const _TextPart(this.item, this.quantity);
 
   final FlowerEntity item;
-
   final int quantity;
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 10,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              child: AutoSizeText(
-                context.t.flower_details
-                    .title(name: item.name, price: item.price),
-                style: context.textTheme.titleLarge,
-                maxLines: 1,
-              ),
-            ),
-            Flexible(
-              child: AutoSizeText(
-                item.flowerType,
-                style: context.textTheme.titleMedium,
-                maxLines: 1,
-              ),
-            ),
-            if (item.description.isNotEmpty)
-              Flexible(child: AutoSizeText(item.description)),
-            const Gap(10),
-            Container(
-              height: 80,
-              width: double.infinity,
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Row(
-                      children: [
-                        Expanded(child: _removeButton(context)),
-                        Flexible(
-                          child: Center(
-                            child: AutoSizeText(
-                              quantity.toString(),
-                              style: context.textTheme.titleSmall,
-                              minFontSize: 5,
-                            ),
-                          ),
-                        ),
-                        Expanded(child: _addButton(context)),
-                      ],
-                    ),
-                  ),
-                  const Gap(5),
-                  Expanded(
-                    child: AutoSizeText(
-                      context.t.flower_details.batchOf(
-                        value: item.batchSize,
-                      ),
-                      textAlign: TextAlign.end,
-                      style: context.textTheme.bodySmall!.copyWith(
-                        fontWeight: FontWeight.w100,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            _addToCartButton(context),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildTitleText(context),
+          _buildFlowerTypeText(context),
+          if (item.description.isNotEmpty) _buildDescriptionText(context),
+          const Gap(10),
+          _buildQuantityContainer(context),
+          const Gap(15),
+          _buildAddToCartButton(context),
+        ],
       ),
     );
   }
 
-  Widget _removeButton(BuildContext context) {
-    return OutlinedButton(
+  Widget _buildTitleText(BuildContext context) {
+    return AutoSizeText(
+      context.t.flower_details.title(name: item.name, price: item.price),
+      style: context.textTheme.titleLarge,
+      maxLines: 1,
+    );
+  }
+
+  Widget _buildFlowerTypeText(BuildContext context) {
+    return AutoSizeText(
+      item.flowerType,
+      style: context.textTheme.titleMedium,
+      maxLines: 1,
+    );
+  }
+
+  Widget _buildDescriptionText(BuildContext context) {
+    return AutoSizeText(
+      item.description,
+      style: context.textTheme.bodySmall,
+    );
+  }
+
+  Widget _buildQuantityContainer(BuildContext context) {
+    return Container(
+      height: 100,
+      width: double.infinity,
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                Expanded(child: _buildRemoveButton(context)),
+                Flexible(
+                  child: Center(
+                    child: AutoSizeText(
+                      quantity.toString(),
+                      style: context.textTheme.titleSmall,
+                      minFontSize: 5,
+                    ),
+                  ),
+                ),
+                Expanded(child: _buildAddButton(context)),
+              ],
+            ),
+          ),
+          const Gap(20),
+          Expanded(
+            child: AutoSizeText(
+              context.t.flower_details.batchOf(value: item.batchSize),
+              textAlign: TextAlign.end,
+              style: context.textTheme.bodySmall!.copyWith(
+                fontWeight: FontWeight.w100,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRemoveButton(BuildContext context) {
+    return _buildOutlinedButton(
+      context,
       onPressed: () {
         context.read<FlowerDetailsBloc>().add(
               FlowerDetailsRemoveEvent(item.batchSize),
             );
       },
-      style: OutlinedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            10,
-          ),
-        ),
-      ),
-      child: const Icon(Icons.remove),
+      icon: Icons.remove,
     );
   }
 
-  Widget _addButton(BuildContext context) {
-    return FilledButton(
+  Widget _buildAddButton(BuildContext context) {
+    return _buildFilledButton(
+      context,
       onPressed: () {
         context.read<FlowerDetailsBloc>().add(
               FlowerDetailsAddEvent(item.batchSize),
             );
       },
-      style: FilledButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            10,
-          ),
-        ),
-      ),
-      child: const Icon(Icons.add),
+      icon: Icons.add,
     );
   }
 
-  Widget _addToCartButton(BuildContext context) {
+  Widget _buildAddToCartButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       height: 50,
@@ -131,16 +124,40 @@ class _TextPart extends StatelessWidget {
                 AddToCart(CartEntity(item: item, quantity: quantity)),
               );
         },
-        style: OutlinedButton.styleFrom(
-          maximumSize: const Size(double.infinity, 50),
-          minimumSize: const Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: Text(
-          context.t.flower_details.addToCard,
-        ),
+        style: _buttonStyle(context),
+        child: Text(context.t.flower_details.addToCard),
+      ),
+    );
+  }
+
+  Widget _buildOutlinedButton(
+    BuildContext context, {
+    required VoidCallback onPressed,
+    required IconData icon,
+  }) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: _buttonStyle(context),
+      child: Icon(icon),
+    );
+  }
+
+  Widget _buildFilledButton(
+    BuildContext context, {
+    required VoidCallback onPressed,
+    required IconData icon,
+  }) {
+    return FilledButton(
+      onPressed: onPressed,
+      style: _buttonStyle(context),
+      child: Icon(icon),
+    );
+  }
+
+  ButtonStyle _buttonStyle(BuildContext context) {
+    return ButtonStyle(
+      shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
   }

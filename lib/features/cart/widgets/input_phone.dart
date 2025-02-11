@@ -6,22 +6,20 @@ class _InputPhone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void valueChanged(String value) {
-      context.read<CartFormCubit>().phoneChanged(value);
+      context.read<CartBloc>().add(PhoneChangedEvent(value));
     }
 
-    return BlocBuilder<CartFormCubit, CartFormState>(
-      builder: (context, state) {
-        return TextFormField(
-          onChanged: valueChanged,
-          controller: state.phoneController,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelText: t.sign_up.phoneLabel,
-            errorMaxLines: 10,
-            errorText: state.phone.getError,
-          ),
-        );
-      },
+    final field = context.select((CartBloc bloc) => bloc.state.phone);
+
+    return TextFormField(
+      onChanged: valueChanged,
+      initialValue: field.value,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        labelText: t.sign_up.phoneLabel,
+        errorMaxLines: 10,
+        errorText: field.getError,
+      ),
     );
   }
 }

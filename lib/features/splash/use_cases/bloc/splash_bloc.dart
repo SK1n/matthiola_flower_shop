@@ -27,7 +27,7 @@ class SplashBloc extends SideEffectBloc<SplashEvent, SplashState, BaseCommand> {
     }
     final result = await auth.loginAnonymous();
     if (result.isError()) {
-      produceSideEffect(BaseCommand.failure(result.tryGetError()!));
+    return  produceSideEffect(BaseCommand.failure(result.tryGetError()!));
     }
     produceSideEffect(BaseCommand.go(const HomeScaffoldRoute()));
   }

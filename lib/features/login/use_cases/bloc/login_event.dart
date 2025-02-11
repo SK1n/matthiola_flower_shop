@@ -11,14 +11,33 @@ class LoginRequestedEvent extends LoginEvent {
   const LoginRequestedEvent();
 }
 
-class LoginCreateAccountTappedEvent extends LoginEvent {
-  const LoginCreateAccountTappedEvent();
+class RedirectEvent extends LoginEvent {
+  const RedirectEvent(this.data);
+
+  final GoRouteData data;
+
+  @override
+  List<Object> get props => [data];
 }
 
-class LoginForgotPasswordTappedEvent extends LoginEvent {
-  const LoginForgotPasswordTappedEvent();
+class EmailChangedEvent extends LoginEvent {
+  const EmailChangedEvent(this.email);
+
+  final String email;
+
+  @override
+  List<Object> get props => [email];
 }
 
-class _SubscribeToForm extends LoginEvent {
-  const _SubscribeToForm();
+class PasswordChangedEvent extends LoginEvent {
+  const PasswordChangedEvent(this.password);
+
+  final String password;
+
+  @override
+  List<Object> get props => [password];
+}
+
+class TogglePasswordVisibilityEvent extends LoginEvent {
+  const TogglePasswordVisibilityEvent();
 }

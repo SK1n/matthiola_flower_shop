@@ -1,23 +1,24 @@
 part of '../screen/create_account_screen.dart';
 
-class _InputAddress extends StatelessWidget {
-  const _InputAddress();
+class _InputPhone extends StatelessWidget {
+  const _InputPhone();
 
   @override
   Widget build(BuildContext context) {
     void valueChanged(String value) {
-      context.read<CreateAccountFormCubit>().addressChanged(value);
+      context.read<CreateAccountFormCubit>().phoneChanged(value);
     }
 
     return BlocBuilder<CreateAccountFormCubit, CreateAccountFormState>(
       builder: (context, state) {
         return TextFormField(
           onChanged: valueChanged,
-          initialValue: state.address.value,
-          keyboardType: TextInputType.text,
+          initialValue: state.phone.value,
+          keyboardType: TextInputType.phone,
           decoration: InputDecoration(
-            labelText: context.t.sign_up.addressLabel,
-            errorText: state.address.getError,
+            labelText: t.sign_up.phoneLabel,
+            errorMaxLines: 10,
+            errorText: state.phone.getError,
           ),
         );
       },

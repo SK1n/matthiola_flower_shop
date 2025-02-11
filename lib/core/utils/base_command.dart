@@ -6,17 +6,20 @@ sealed class BaseCommand {
 
   factory BaseCommand.failure(Failure failure, {Exception? e}) = FailureCommand;
   factory BaseCommand.success(String message) = SuccessCommand;
-  factory BaseCommand.go(GoRouteData route) = GoCommand;
+  factory BaseCommand.go(RouteData route) = GoCommand;
   factory BaseCommand.pop({dynamic data}) = PopCommand;
-  factory BaseCommand.goBranch(int branch) = GoBranchCommand;
+  factory BaseCommand.goBranch(
+    int branch,
+    StatefulNavigationShell navigationShell,
+  ) = GoBranch;
   factory BaseCommand.showDialog([dynamic data]) = ShowDialogCommand;
 
   void when({
     required void Function(Failure) failure,
     required void Function(String) success,
     void Function({dynamic data})? pop,
-    void Function(GoRouteData)? go,
-    void Function(int)? goBranch,
+    void Function(RouteData)? go,
+    void Function(int, StatefulNavigationShell)? goBranch,
     void Function([dynamic data])? showDialog,
   }) {
     if (this is FailureCommand) {
@@ -31,9 +34,11 @@ sealed class BaseCommand {
     } else if (this is GoCommand) {
       go?.call((this as GoCommand).route);
       return;
-    } else if (this is GoBranchCommand) {
-      goBranch?.call((this as GoBranchCommand).branch);
-      return;
+    } else if (this is GoBranch) {
+      return goBranch!(
+        (this as GoBranch).branch,
+        (this as GoBranch).navigationShell,
+      );
     } else if (this is ShowDialogCommand) {
       showDialog?.call((this as ShowDialogCommand).data);
       return;
@@ -60,12 +65,13 @@ class PopCommand extends BaseCommand {
 
 class GoCommand extends BaseCommand {
   GoCommand(this.route);
-  final GoRouteData route;
+  final RouteData route;
 }
 
-class GoBranchCommand extends BaseCommand {
-  GoBranchCommand(this.branch);
+class GoBranch extends BaseCommand {
+  GoBranch(this.branch, this.navigationShell);
   final int branch;
+  final StatefulNavigationShell navigationShell;
 }
 
 class ShowDialogCommand extends BaseCommand {

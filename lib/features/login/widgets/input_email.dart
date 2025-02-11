@@ -6,22 +6,18 @@ class _InputEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void valueChanged(String value) {
-      context.read<LoginFormCubit>().updateEmail(value);
+      context.read<LoginBloc>().add(EmailChangedEvent(value));
     }
 
-    return BlocBuilder<LoginFormCubit, LoginFormState>(
-      builder: (context, state) {
-        return TextFormField(
-          onChanged: valueChanged,
-          initialValue: state.email.value,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            labelText: context.t.sign_in.emailLabel,
-            border: const OutlineInputBorder(),
-            errorText: state.email.getError,
-          ),
-        );
-      },
+    final field = context.select((LoginBloc bloc) => bloc.state.email);
+
+    return TextFormField(
+      onChanged: valueChanged,
+      initialValue: field.value,
+      decoration: InputDecoration(
+        labelText: context.t.sign_in.emailLabel,
+        errorText: field.getError,
+      ),
     );
   }
 }

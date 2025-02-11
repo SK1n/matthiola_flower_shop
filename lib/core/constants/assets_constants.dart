@@ -8,6 +8,7 @@ final class AssetsConstants {
   static const String _ICONS = '${_ASSETS}icons/';
 
   static String APP_LOGO = '${_LOGO}app_logo'.svg;
+  static String ALGOLIA_LOGO = '${_LOGO}algolia'.png;
   static String EYE_ICON = '${_ICONS}eye'.svg;
   static String EYE_SLASH_ICON = '${_ICONS}eye_slash'.svg;
 

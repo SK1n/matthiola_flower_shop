@@ -21,4 +21,8 @@ abstract class IRepository<T> {
   Future<Result<bool, Failure>> exists(String path) {
     throw UnimplementedError();
   }
+
+  Future<Result<List<T>, Failure>> search(String query) {
+    throw UnimplementedError();
+  }
 }

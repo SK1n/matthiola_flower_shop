@@ -10,13 +10,14 @@ import 'package:matthiola_flower_shop/core/utils/extensions/build_context_extens
 import 'package:matthiola_flower_shop/core/utils/extensions/input_extension.dart';
 import 'package:matthiola_flower_shop/core/utils/snackbar_util.dart';
 import 'package:matthiola_flower_shop/features/login/use_cases/bloc/login_bloc.dart';
-import 'package:matthiola_flower_shop/features/login/use_cases/cubit/login_form_cubit.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:matthiola_flower_shop/widgets/loading_widget.dart';
 import 'package:side_effect_cubit/side_effect_cubit.dart';
 
+part '../widgets/forgot_password_text.dart';
 part '../widgets/input_email.dart';
 part '../widgets/input_password.dart';
+part '../widgets/register_text.dart';
 part '../widgets/submit_button.dart';
 part 'listener.dart';
 
@@ -29,72 +30,52 @@ class LoginScreen extends StatelessWidget {
       listener: _sideEffectListener,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(context.t.sign_in.appBarTitle),
+          // title: Text(context.t.sign_in.appBarTitle),
+          backgroundColor: Colors.transparent,
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
                 if (state.isLoading) return const LoadingWidget();
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Gap(40),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        context.t.sign_in.title,
-                        style: context.textTheme.displaySmall,
-                      ),
-                    ),
-                    const Gap(40),
-                    const _InputEmail(),
-                    const Gap(10),
-                    const _InputPassword(),
-                    const Gap(10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            context
-                                .read<LoginBloc>()
-                                .add(const LoginForgotPasswordTappedEvent());
-                          },
-                          child: Text(context.t.reset_password.title),
+                return Center(
+                  child: SingleChildScrollView(
+                    child: Center(
+                      child: Card(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(60),
+                            bottomRight: Radius.circular(20),
+                            bottomLeft: Radius.circular(60),
+                          ),
                         ),
-                      ],
-                    ),
-                    const Gap(10),
-                    _SubmitButton(state),
-                    Expanded(child: Container()),
-                    Center(
-                      child: RichText(
-                        text: TextSpan(
-                          style: context.textTheme.titleMedium,
-                          children: [
-                            TextSpan(
-                              text: t.sign_in.noAccount,
-                            ),
-                            TextSpan(
-                              text: ' ${t.sign_in.register}',
-                              style: context.textTheme.titleMedium!.copyWith(
-                                color: context.colorScheme.primary,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  context.read<LoginBloc>().add(
-                                        const LoginCreateAccountTappedEvent(),
-                                      );
-                                },
-                            ),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 100,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const _InputEmail(),
+                              const Gap(20),
+                              const _InputPassword(),
+                              const Gap(20),
+                              const _ForgotPasswordText(),
+                              const Gap(20),
+                              _SubmitButton(state),
+                              const Gap(40),
+                              const _RegisterText(),
+                              const Gap(20),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    const Gap(20),
-                  ],
+                  ),
                 );
               },
             ),

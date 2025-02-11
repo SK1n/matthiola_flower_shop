@@ -16,7 +16,6 @@ import 'package:matthiola_flower_shop/domain/models/flower/flower_entity.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/bloc/cart_bloc.dart';
 import 'package:matthiola_flower_shop/features/favorites/use_cases/favorite_bloc.dart';
 import 'package:matthiola_flower_shop/features/flower_details/use_cases/flower_details_bloc.dart';
-import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:matthiola_flower_shop/widgets/loading_widget.dart';
 import 'package:octo_image/octo_image.dart';
@@ -37,44 +36,57 @@ class FlowerDetailsScreen extends StatelessWidget {
       listener: _sideEffectListener,
       child: BlocBuilder<FlowerDetailsBloc, FlowerDetailsState>(
         builder: (context, state) {
-          if (state.isLoading) return const LoadingWidget();
           return Scaffold(
             appBar: _AppBar(state.item),
-            body: LayoutBuilder(
-              builder: (context, constraints) {
-                final imageSize = Size(
-                  constraints.maxWidth,
-                  constraints.maxHeight * 0.4,
-                );
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: imageSize.height,
-                      width: imageSize.width,
-                      child: OctoImage(
-                        image: CachedNetworkImageProvider(
-                          state.item.image,
-                        ),
-                        placeholderBuilder: OctoBlurHashFix.placeHolder(
-                          AppConstants.PLACEHOLDER_BLUR_HASH,
-                        ),
-                        imageBuilder: (context, child) {
-                          return child;
-                        },
-                        errorBuilder: OctoError.icon(color: Colors.red),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Expanded(
-                      child: _TextPart(state.item, state.quantity),
-                    ),
-                  ],
-                );
-              },
-            ),
+            body: state.isLoading
+                ? const LoadingWidget()
+                : _buildContent(context, state),
           );
         },
       ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, FlowerDetailsState state) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final imageSize = Size(
+          constraints.maxWidth,
+          constraints.maxHeight * 0.4,
+        );
+
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildImage(state, imageSize),
+              _buildDetailsSection(state),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildImage(FlowerDetailsState state, Size imageSize) {
+    return SizedBox(
+      height: imageSize.height,
+      width: imageSize.width,
+      child: OctoImage(
+        image: CachedNetworkImageProvider(state.item.image),
+        placeholderBuilder: OctoBlurHashFix.placeHolder(
+          AppConstants.PLACEHOLDER_BLUR_HASH,
+        ),
+        imageBuilder: (context, child) => child,
+        errorBuilder: OctoError.icon(color: Colors.red),
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _buildDetailsSection(FlowerDetailsState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: _TextPart(state.item, state.quantity),
     );
   }
 }

@@ -54,3 +54,22 @@ class DeleteAccountEvent extends HomeEvent {
 class OnCartTappedEvent extends HomeEvent {
   const OnCartTappedEvent();
 }
+
+class HomeSearchResultEvent extends HomeEvent {
+  const HomeSearchResultEvent(this.flowers, this.query);
+
+  final List<FlowerEntity> flowers;
+  final String query;
+
+  @override
+  List<Object> get props => [flowers];
+}
+
+class ControllerIndexChangedEvent extends HomeEvent {
+  const ControllerIndexChangedEvent(this.index);
+
+  final int index;
+
+  @override
+  List<Object> get props => [index];
+}

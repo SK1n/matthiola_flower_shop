@@ -27,16 +27,45 @@ class __SearchBarState extends State<_SearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.zero,
-      child: SearchAnchor(
-        searchController: _controller,
-        builder: _builder,
-        suggestionsBuilder: _suggestionsBuilder,
-        viewOnSubmitted: (query) {
-          _controller.closeView(query);
-        },
-      ),
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.filteredData != current.filteredData,
+      builder: (context, state) {
+        final data = context.watch<HomeBloc>().state.filteredData;
+        return SearchAnchor(
+          searchController: _controller,
+          builder: _builder,
+          suggestionsBuilder: (context, controller) {
+            return List<ListTile>.generate(data.length, (int index) {
+              final text = data[index].name;
+              return ListTile(
+                title: Text(text),
+                onTap: () {
+                  controller.closeView(text);
+                },
+              );
+            });
+          },
+          viewOnSubmitted: (query) {
+            _controller.closeView(query);
+          },
+          viewBuilder: (suggestions) {
+            return ListView(
+              shrinkWrap: true,
+              children: state.filteredData
+                  .map(
+                    (element) => ListTile(
+                      title: Text(element.name),
+                      onTap: () {
+                        _controller.closeView(element.name);
+                      },
+                    ),
+                  )
+                  .toList(),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -65,26 +94,6 @@ class __SearchBarState extends State<_SearchBar> {
       hintText: context.t.home.search,
       leading: const Icon(Icons.search),
     );
-  }
-
-  FutureOr<Iterable<Widget>> _suggestionsBuilder(
-    BuildContext context,
-    SearchController controller,
-  ) {
-    final data = [
-      ...widget.state.potData,
-      ...widget.state.stemData,
-      ...widget.state.accessoriesData,
-    ];
-    return List<ListTile>.generate(data.length, (int index) {
-      final text = data[index].name;
-      return ListTile(
-        title: Text(text),
-        onTap: () {
-          controller.closeView(text);
-        },
-      );
-    });
   }
 
   @override

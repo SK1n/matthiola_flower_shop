@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/constants/assets_constants.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
@@ -16,8 +17,8 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSideEffectListener<SplashBloc, BaseCommand>(
       listener: _sideEffectListener,
-      child: CupertinoPageScaffold(
-        child: SafeArea(
+      child: Scaffold(
+        body: SafeArea(
           child: Center(
             child: SvgPicture.asset(
               AssetsConstants.APP_LOGO,

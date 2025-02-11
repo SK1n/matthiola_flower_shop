@@ -1,25 +1,36 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'login_bloc.dart';
 
-class LoginState extends Equatable {
+class LoginState extends Equatable with FormzMixin {
   const LoginState({
     this.isLoading = false,
-    this.formIsValid = false,
+    this.showPassword = false,
+    this.email = const EmailValidator.pure(),
+    this.password = const PasswordValidator.pure(),
   });
 
   final bool isLoading;
-  final bool formIsValid;
+  final bool showPassword;
+
+  final EmailValidator email;
+  final PasswordValidator password;
 
   @override
-  List<Object> get props => [isLoading, formIsValid];
+  List<Object> get props => [isLoading, showPassword, email, password];
+
+  @override
+  List<FormzInput<dynamic, dynamic>> get inputs => [email, password];
 
   LoginState copyWith({
     bool? isLoading,
-    bool? formIsValid,
+    bool? showPassword,
+    EmailValidator? email,
+    PasswordValidator? password,
   }) {
     return LoginState(
       isLoading: isLoading ?? this.isLoading,
-      formIsValid: formIsValid ?? this.formIsValid,
+      showPassword: showPassword ?? this.showPassword,
+      email: email ?? this.email,
+      password: password ?? this.password,
     );
   }
 }

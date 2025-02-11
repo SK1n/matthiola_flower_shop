@@ -17,8 +17,6 @@ void _sideEffectListener(BuildContext context, BaseCommand command) {
           (route as CreateAccountRoute).push<void>(context);
         case ForgotPasswordRoute:
           (route as ForgotPasswordRoute).push<void>(context);
-        case HomeScaffoldRoute:
-          (route as HomeScaffoldRoute).pushReplacement(context);
       }
     },
   );

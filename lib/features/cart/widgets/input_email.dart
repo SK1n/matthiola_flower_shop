@@ -6,21 +6,19 @@ class _InputEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void valueChanged(String value) {
-      context.read<CartFormCubit>().emailChanged(value);
+      context.read<CartBloc>().add(EmailChangedEvent(value));
     }
 
-    return BlocBuilder<CartFormCubit, CartFormState>(
-      builder: (context, state) {
-        return TextFormField(
-          onChanged: valueChanged,
-          controller: state.emailController,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            labelText: t.sign_up.emailLabel,
-            errorText: state.email.getError,
-          ),
-        );
-      },
+    final field = context.select((CartBloc bloc) => bloc.state.email);
+
+    return TextFormField(
+      onChanged: valueChanged,
+      initialValue: field.value,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        labelText: t.sign_up.emailLabel,
+        errorText: field.getError,
+      ),
     );
   }
 }

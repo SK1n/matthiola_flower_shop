@@ -6,35 +6,31 @@ class _InputPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void passwordChanged(String value) {
-      context.read<LoginFormCubit>().updatePassword(value);
+      context.read<LoginBloc>().add(PasswordChangedEvent(value));
     }
 
     void toggleShowPassword() {
-      context.read<LoginFormCubit>().toggleShowPassword();
+      context.read<LoginBloc>().add(const TogglePasswordVisibilityEvent());
     }
 
-    return BlocBuilder<LoginFormCubit, LoginFormState>(
-      builder: (context, state) {
-        return TextFormField(
-          onChanged: passwordChanged,
-          initialValue: state.password.value.$1,
-          obscureText: !state.showPassword,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelText: t.sign_in.passwordLabel,
-            border: const OutlineInputBorder(),
-            suffixIcon: GestureDetector(
-              onTap: toggleShowPassword,
-              child: Icon(
-                state.showPassword
-                    ? CupertinoIcons.eye
-                    : CupertinoIcons.eye_slash,
-              ),
-            ),
-            errorText: state.password.getErrorTuple1,
+    final field = context.select((LoginBloc bloc) => bloc.state.password);
+    final showPassword =
+        context.select((LoginBloc bloc) => bloc.state.showPassword);
+
+    return TextFormField(
+      onChanged: passwordChanged,
+      initialValue: field.value.$1,
+      obscureText: !showPassword,
+      decoration: InputDecoration(
+        labelText: t.sign_in.passwordLabel,
+        suffixIcon: GestureDetector(
+          onTap: toggleShowPassword,
+          child: Icon(
+            showPassword ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
           ),
-        );
-      },
+        ),
+        errorText: field.getErrorTuple1,
+      ),
     );
   }
 }

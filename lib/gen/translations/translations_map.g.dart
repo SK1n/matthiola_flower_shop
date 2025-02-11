@@ -72,7 +72,8 @@ extension on Translations {
 			case 'flower_details.batchOf': return ({required Object value}) => 'Acest produs se poate cumpăra doar în multiplu de ${value}.';
 			case 'flower_details.maxQuantityReached': return 'Cantitatea maximă a fost atinsă. Nu poți adăuga mai multe articole.';
 			case 'generic.unknownException': return 'A apărut o eroare necunoscută.';
-			case 'generic.search': return 'Căutați după nume';
+			case 'generic.search': return 'Căutați...';
+			case 'generic.noResults': return 'Nu s-au găsit rezultate';
 			case 'generic.title': return 'Matthiola';
 			case 'generic.or': return 'Sau';
 			case 'generic.required': return 'Acest câmp este obligatoriu';
@@ -95,6 +96,8 @@ extension on Translations {
 			case 'home.inStock': return ({required Object value}) => '${value} bucăți în stoc.';
 			case 'home.cantRefreshNow': return 'Lista nu poate fi reîmprospătată acum. Încercați din nou în scurt timp.';
 			case 'home.welcomeBack': return 'Bine ați revenit,';
+			case 'home.outOfStock': return 'Acest produs nu mai este in stoc.';
+			case 'home.poweredByAlgolia': return 'Powered by Algolia';
 			case 'profile.logOut': return 'Delogare';
 			case 'profile.deleteAccount': return 'Șterge contul';
 			case 'profile.deleteMessage': return 'Ești sigur că vrei să ștergi definitiv contul și toate datele asociate?';
@@ -116,6 +119,7 @@ extension on Translations {
 			case 'sign_in.noAccount': return 'Nu aveți încă un cont?';
 			case 'sign_in.register': return 'Înregistrați-vă';
 			case 'sign_in.signIn': return 'Intră în cont';
+			case 'sign_in.reset': return 'Ați uitat parola?';
 			case 'sign_up.title': return 'Crează un cont';
 			case 'sign_up.emailLabel': return 'Introduceți adresa de email';
 			case 'sign_up.emailHint': return 'De exemplu, numeletau@gmail.com';
@@ -201,7 +205,8 @@ extension on _TranslationsEn {
 			case 'flower_details.batchOf': return ({required Object value}) => 'This product can only be purchased in multiples of ${value}.';
 			case 'flower_details.maxQuantityReached': return 'Maximum quantity reached. You cannot add more items.';
 			case 'generic.unknownException': return 'An unknown exception occurred.';
-			case 'generic.search': return 'Search by name';
+			case 'generic.search': return 'Search...';
+			case 'generic.noResults': return 'No results found';
 			case 'generic.title': return 'Matthiola';
 			case 'generic.or': return 'Or';
 			case 'generic.required': return 'This field is required';
@@ -224,6 +229,8 @@ extension on _TranslationsEn {
 			case 'home.inStock': return ({required Object value}) => '${value} items in stock';
 			case 'home.cantRefreshNow': return 'The list can\'t be refreshed right now. Please try again shortly.';
 			case 'home.welcomeBack': return 'Welcome back,';
+			case 'home.outOfStock': return 'This product is out of stock.';
+			case 'home.poweredByAlgolia': return 'Powered by Algolia';
 			case 'profile.logOut': return 'Log out';
 			case 'profile.deleteAccount': return 'Delete account';
 			case 'profile.deleteMessage': return 'Are you sure you want to permanently delete your account and all associated data?';
@@ -242,9 +249,10 @@ extension on _TranslationsEn {
 			case 'sign_in.emailHint': return 'E.g. yourname@gmail.com';
 			case 'sign_in.emailPrefix': return 'Email';
 			case 'sign_in.passwordLabel': return 'Enter your password';
+			case 'sign_in.reset': return 'Forgot password?';
 			case 'sign_in.noAccount': return 'Don\'t have an account yet?';
 			case 'sign_in.register': return 'Register';
-			case 'sign_in.signIn': return 'Sign In';
+			case 'sign_in.signIn': return 'Log in';
 			case 'sign_up.title': return 'Create an Account';
 			case 'sign_up.emailLabel': return 'Enter your email address';
 			case 'sign_up.emailHint': return 'E.g. yourname@gmail.com';

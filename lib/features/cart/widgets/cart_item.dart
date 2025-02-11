@@ -20,7 +20,7 @@ class CartItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: item.error.isEmpty ? 120 : 130,
+      height: item.error.isEmpty ? 190 : 200,
       child: Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,10 +28,10 @@ class CartItem extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 120,
-                    width: 100,
+                  Expanded(
+                    flex: 2,
                     child: OctoImage(
                       image: CachedNetworkImageProvider(
                         item.item.image,
@@ -45,91 +45,100 @@ class CartItem extends StatelessWidget {
                   ),
                   const Gap(5),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: AutoSizeText(
-                            item.item.name,
-                            style: context.textTheme.titleLarge,
-                          ),
-                        ),
-                        Expanded(
-                          child: AutoSizeText(
-                            context.t.generic.price(
-                              value: (item.item.price * item.quantity)
-                                  .toStringAsFixed(2),
+                    flex: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: AutoSizeText(
+                              item.item.name,
+                              style: context.textTheme.titleLarge,
                             ),
-                            style: context.textTheme.titleLarge,
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(10),
+                          Expanded(
+                            child: AutoSizeText(
+                              context.t.generic.price(
+                                value: (item.item.price * item.quantity)
+                                    .toStringAsFixed(2),
+                              ),
+                              style: context.textTheme.titleLarge,
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      context.read<CartBloc>().add(
-                                            RemoveFromCart(
-                                              CartEntity(
-                                                item: item.item,
-                                                quantity: item.item.batchSize,
+                          ),
+                          const Gap(10),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: context.colorScheme.onPrimaryContainer,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        context.read<CartBloc>().add(
+                                              RemoveFromCart(
+                                                CartEntity(
+                                                  item: item.item,
+                                                  quantity: item.item.batchSize,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                    },
-                                    child: const Icon(Icons.remove),
+                                            );
+                                      },
+                                      child: const Icon(Icons.remove),
+                                    ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: AutoSizeText(
-                                    item.quantity.toString(),
-                                    textAlign: TextAlign.center,
-                                    style: context.textTheme.titleLarge,
+                                  Expanded(
+                                    child: AutoSizeText(
+                                      item.quantity.toString(),
+                                      textAlign: TextAlign.center,
+                                      style: context.textTheme.titleLarge,
+                                    ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      context.read<CartBloc>().add(
-                                            AddToCart(
-                                              CartEntity(
-                                                item: item.item,
-                                                quantity: item.item.batchSize,
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        context.read<CartBloc>().add(
+                                              AddToCart(
+                                                CartEntity(
+                                                  item: item.item,
+                                                  quantity: item.item.batchSize,
+                                                ),
+                                                showDialog: false,
                                               ),
-                                              showDialog: false,
-                                            ),
-                                          );
-                                    },
-                                    child: const Icon(Icons.add),
+                                            );
+                                      },
+                                      child: const Icon(Icons.add),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        const Gap(5),
-                      ],
+                          const Gap(5),
+                        ],
+                      ),
                     ),
                   ),
-                  const Gap(20),
-                  GestureDetector(
-                    onTap: () {
-                      context.read<CartBloc>().add(RecyclePressed(item));
-                    },
-                    child: Icon(
-                      Icons.delete,
-                      color: context.colorScheme.error,
+                  const Gap(10),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, right: 8),
+                    child: GestureDetector(
+                      onTap: () {
+                        context.read<CartBloc>().add(RecyclePressed(item));
+                      },
+                      child: Icon(
+                        Icons.delete,
+                        color: context.colorScheme.error,
+                      ),
                     ),
                   ),
-                  const Gap(5),
                 ],
               ),
             ),

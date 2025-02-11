@@ -6,21 +6,19 @@ class _InputUsername extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void valueChanged(String value) {
-      context.read<CartFormCubit>().usernameChanged(value);
+      context.read<CartBloc>().add(UsernameChangedEvent(value));
     }
 
-    return BlocBuilder<CartFormCubit, CartFormState>(
-      builder: (context, state) {
-        return TextFormField(
-          onChanged: valueChanged,
-          controller: state.usernameController,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelText: t.sign_up.usernameLabel,
-            errorText: state.username.getError,
-          ),
-        );
-      },
+    final field = context.select((CartBloc bloc) => bloc.state.username);
+
+    return TextFormField(
+      onChanged: valueChanged,
+      initialValue: field.value,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        labelText: t.sign_up.usernameLabel,
+        errorText: field.getError,
+      ),
     );
   }
 }

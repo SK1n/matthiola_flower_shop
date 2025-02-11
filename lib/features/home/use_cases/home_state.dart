@@ -1,7 +1,7 @@
 part of 'home_bloc.dart';
 
 class HomeState extends Equatable {
-  const HomeState({
+  HomeState({
     this.isLoading = false,
     this.isAnonymous = false,
     this.filteredData = const [],
@@ -10,8 +10,15 @@ class HomeState extends Equatable {
     this.accessoriesData = const [],
     this.choiceChipSelectedItem = 0,
     this.query = '',
+    this.controllerIndex = 0,
     this.user = UserEntity.empty,
-  });
+    List<Query<FlowerEntity>>? firestoreQuery,
+  }) : firestoreQuery = firestoreQuery ??
+            [
+              _createQuery(0),
+              _createQuery(1),
+              _createQuery(2),
+            ];
 
   final bool isLoading;
   final bool isAnonymous;
@@ -20,8 +27,10 @@ class HomeState extends Equatable {
   final List<FlowerEntity> accessoriesData;
   final List<FlowerEntity> filteredData;
   final int choiceChipSelectedItem;
+  final List<Query<FlowerEntity>> firestoreQuery;
   final String query;
   final UserEntity user;
+  final int controllerIndex;
 
   @override
   List<Object> get props => [
@@ -34,6 +43,7 @@ class HomeState extends Equatable {
         query,
         isAnonymous,
         user,
+        controllerIndex,
       ];
 
   HomeState copyWith({
@@ -44,8 +54,10 @@ class HomeState extends Equatable {
     List<FlowerEntity>? accessoriesData,
     List<FlowerEntity>? filteredData,
     int? choiceChipSelectedItem,
+    List<Query<FlowerEntity>>? firestoreQuery,
     String? query,
     UserEntity? user,
+    int? controllerIndex,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
@@ -56,8 +68,21 @@ class HomeState extends Equatable {
       filteredData: filteredData ?? this.filteredData,
       choiceChipSelectedItem:
           choiceChipSelectedItem ?? this.choiceChipSelectedItem,
+      firestoreQuery: firestoreQuery ?? this.firestoreQuery,
       query: query ?? this.query,
       user: user ?? this.user,
+      controllerIndex: controllerIndex ?? this.controllerIndex,
     );
+  }
+
+  static Query<FlowerEntity> _createQuery(int type) {
+    return FirebaseFirestore.instance
+        .collection(FirestoreConstants.FLOWERS_COLLECTION)
+        .where(AppConstants.QUERY_QUANTITY, isGreaterThan: 0)
+        .where(AppConstants.QUERY_TYPE, isEqualTo: type)
+        .withConverter<FlowerEntity>(
+          fromFirestore: (doc, _) => FlowerEntity.fromJson(doc.data()!),
+          toFirestore: (flower, _) => flower.toJson(),
+        );
   }
 }

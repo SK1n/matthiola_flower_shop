@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:matthiola_flower_shop/core/constants/error_codes.dart';
 import 'package:matthiola_flower_shop/core/utils/failures/failure.dart';
+import 'package:matthiola_flower_shop/data/algolia_search_service.dart';
 import 'package:matthiola_flower_shop/domain/models/flower/flower_entity.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_repository.dart';
 import 'package:multiple_result/multiple_result.dart';
 
 class FlowerRepository implements IRepository<FlowerEntity> {
-  const FlowerRepository(this.provider);
+  const FlowerRepository(this.provider, this._searchService);
   final FirebaseFirestore provider;
+  final AlgoliaSearchService _searchService;
+
   @override
   Future<Result<FlowerEntity, Failure>> get(String path) async {
     try {
@@ -79,6 +82,21 @@ class FlowerRepository implements IRepository<FlowerEntity> {
       return Result.error(Failure(code: e.code));
     } catch (e) {
       return Result.error(Failure(error: e));
+    }
+  }
+
+  @override
+  Future<Result<List<FlowerEntity>, Failure>> search(String query) async {
+    try {
+      final result = await _searchService.search(query);
+      if (result.isError()) {
+        return Result.error(result.tryGetError()!);
+      }
+      final dataToEmit = result.tryGetSuccess()!;
+      final flowers = dataToEmit.map(FlowerEntity.fromJson).toList();
+      return Result.success(flowers);
+    } catch (e) {
+      return Result.error(Failure(error: e.toString()));
     }
   }
 }

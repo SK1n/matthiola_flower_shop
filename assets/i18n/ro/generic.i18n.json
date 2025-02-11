@@ -1,6 +1,7 @@
 {
     "unknownException": "A apărut o eroare necunoscută.",
-    "search": "Căutați după nume",
+    "search": "Căutați...",
+    "noResults": "Nu s-au găsit rezultate",
     "title": "Matthiola",
     "or": "Sau",
     "required": "Acest câmp este obligatoriu",

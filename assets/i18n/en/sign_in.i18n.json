@@ -5,7 +5,8 @@
     "emailHint": "E.g. yourname@gmail.com",
     "emailPrefix": "Email",
     "passwordLabel": "Enter your password",
+    "reset": "Forgot password?",
     "noAccount": "Don't have an account yet?",
     "register": "Register",
-    "signIn": "Sign In"
+    "signIn": "Log in"
 }

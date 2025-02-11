@@ -12,11 +12,11 @@ void _sideEffectListener(BuildContext context, BaseCommand command) {
     go: (route) {
       switch (route.runtimeType) {
         case FlowerDetailsRoute:
-          (route as FlowerDetailsRoute).go(context);
+          (route as FlowerDetailsRoute).push<void>(context);
         case LoginRoute:
-          (route as LoginRoute).pushReplacement(context);
+          (route as LoginRoute).push<void>(context);
         case CartRoute:
-          (route as CartRoute).go(context);
+          (route as CartRoute).push<void>(context);
       }
     },
   );

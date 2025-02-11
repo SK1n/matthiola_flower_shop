@@ -6,7 +6,9 @@ enum FlowerType {
   thread(AppConstants.FLOWER_TYPE_THREAD, AssetsConstants.STEM_FLOWER),
   pot(AppConstants.FLOWER_TYPE_POT, AssetsConstants.POT_FLOWER),
   accessory(
-      AppConstants.FLOWER_TYPE_ACCESSORY, AssetsConstants.FLOWER_ACCESSORIES),
+    AppConstants.FLOWER_TYPE_ACCESSORY,
+    AssetsConstants.FLOWER_ACCESSORIES,
+  ),
   invalid('', '');
 
   const FlowerType(this.key, this.svg);

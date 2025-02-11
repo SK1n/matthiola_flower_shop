@@ -1,18 +1,20 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 import 'package:matthiola_flower_shop/core/constants/firestore_constants.dart';
 import 'package:matthiola_flower_shop/core/constants/shared_prefs_constants.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/failures/failure.dart';
 import 'package:matthiola_flower_shop/core/utils/failures/order_failure.dart';
+import 'package:matthiola_flower_shop/core/validators/email_validator.dart';
+import 'package:matthiola_flower_shop/core/validators/phone_validator.dart';
+import 'package:matthiola_flower_shop/core/validators/required_validator.dart';
 import 'package:matthiola_flower_shop/domain/models/cart/cart_entity.dart';
 import 'package:matthiola_flower_shop/domain/models/order_request/order_request.dart';
 import 'package:matthiola_flower_shop/domain/models/order_response/order_response.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_repository.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_shared_prefs_repository.dart';
-import 'package:matthiola_flower_shop/features/cart/use_cases/cubit/cart_form_cubit.dart';
 import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
-import 'package:matthiola_flower_shop/features/home_scaffold/use_cases/home_scaffold_bloc.dart';
 import 'package:matthiola_flower_shop/gen/translations/translations.g.dart';
 import 'package:side_effect_cubit/side_effect_cubit.dart';
 
@@ -22,10 +24,8 @@ part 'cart_state.dart';
 class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
   CartBloc(
     this._repository,
-    this._form,
     this._orderRepository,
     this._homeBloc,
-    this._homeScaffoldBloc,
   ) : super(const CartState()) {
     on<AddToCart>(_onAddToCart);
     on<RemoveFromCart>(_onRemoveFromCart);
@@ -33,32 +33,34 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
     on<_EmitAndSaveCartEvent>(_onEmitAndSaveCartEvent);
     on<_InitialEvent>(_onInitialEvent);
     on<ClearCartEvent>(_onClearCartEvent);
-    on<CartHasErrorEvent>(_onCartHasErrorEvent);
     on<SubmitCartEvent>(_onSubmitCartEvent);
     on<RecyclePressed>(_onRecyclePressed);
     on<_SubscribeToUser>(_onSubscribeToUser);
+    on<EmailChangedEvent>(_onEmailChangedEvent);
+    on<PhoneChangedEvent>(_onPhoneChangedEvent);
+    on<AddressChangedEvent>(_onAddressChangedEvent);
+    on<UsernameChangedEvent>(_onUsernameChangedEvent);
     add(const _SubscribeToUser());
     add(const _InitialEvent());
   }
 
   final ISharedPrefsRepository _repository;
-  final CartFormCubit _form;
   final IRepository<OrderRequest> _orderRepository;
   final HomeBloc _homeBloc;
-  final HomeScaffoldBloc _homeScaffoldBloc;
 
   void _onInitialEvent(
     _InitialEvent event,
     Emitter<CartState> emit,
   ) {
-    final uid = _homeBloc.state.user.uid;
-    final result = _repository.readMapList(SharedPrefsConstants.CART_KEY(uid));
+    emit(state.copyWith(isLoading: true));
+    final result = _repository.readMapList(SharedPrefsConstants.CART_KEY);
     if (result.isError()) {
+      emit(state.copyWith(isLoading: false));
       return;
     }
     final data = result.tryGetSuccess()!;
     final list = data.map(CartEntity.fromJson).toList();
-    emit(state.copyWith(items: list));
+    emit(state.copyWith(items: list, isLoading: false));
     add(const _CalculateTotalPriceEvent());
   }
 
@@ -66,9 +68,22 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
     _SubscribeToUser event,
     Emitter<CartState> emit,
   ) async {
-    await for (final user in _homeBloc.stream) {
-      add(const _InitialEvent());
-    }
+    emit(state.copyWith(isLoading: true));
+    await emit.onEach(
+      _homeBloc.stream,
+      onData: (user) {
+        emit(state.copyWith(userId: user.user.uid));
+        if (user.isAnonymous) {
+          add(const _InitialEvent());
+          return;
+        }
+        add(EmailChangedEvent(user.user.email));
+        add(UsernameChangedEvent(user.user.displayName));
+        add(PhoneChangedEvent(user.user.phone));
+        add(AddressChangedEvent(user.user.address));
+        add(const _InitialEvent());
+      },
+    );
   }
 
   Future<void> _onAddToCart(
@@ -162,9 +177,8 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
   ) async {
     final cart = event.cart;
     final mapData = cart.map((element) => element.toJson()).toList();
-    final uid = _homeBloc.state.user.uid;
     final result = await _repository.writeMapList(
-      SharedPrefsConstants.CART_KEY(uid),
+      SharedPrefsConstants.CART_KEY,
       mapData,
     );
     if (result.isError()) {
@@ -178,21 +192,40 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
     ClearCartEvent event,
     Emitter<CartState> emit,
   ) async {
-    final uid = _homeBloc.state.user.uid;
     emit(state.copyWith(items: [], totalPrice: 0));
-    await _repository.remove(SharedPrefsConstants.CART_KEY(uid));
+    await _repository.remove(SharedPrefsConstants.CART_KEY);
   }
 
-  void _onCartHasErrorEvent(
-    CartHasErrorEvent event,
+  void _onUsernameChangedEvent(
+    UsernameChangedEvent event,
     Emitter<CartState> emit,
   ) {
-    // CartEntity(item: , quantity: quantity)
-    // for(final error in event.error) {
-    //   emit(state.copyWith(
+    final value = RequiredValidator.dirty(event.username);
+    emit(state.copyWith(username: value));
+  }
 
-    //   ),)
-    // }
+  void _onAddressChangedEvent(
+    AddressChangedEvent event,
+    Emitter<CartState> emit,
+  ) {
+    final value = RequiredValidator.dirty(event.address);
+    emit(state.copyWith(address: value));
+  }
+
+  void _onPhoneChangedEvent(
+    PhoneChangedEvent event,
+    Emitter<CartState> emit,
+  ) {
+    final value = PhoneValidator.dirty(event.phone);
+    emit(state.copyWith(phone: value));
+  }
+
+  void _onEmailChangedEvent(
+    EmailChangedEvent event,
+    Emitter<CartState> emit,
+  ) {
+    final value = EmailValidator.dirty(event.email);
+    emit(state.copyWith(email: value));
   }
 
   Future<void> _onSubmitCartEvent(
@@ -222,7 +255,7 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
       }
       produceSideEffect(BaseCommand.success(t.checkout.orderPlaced));
       add(const ClearCartEvent());
-      _homeScaffoldBloc.add(const HomeScaffoldOnDestinationSelectedEvent(1));
+      // _homeScaffoldBloc.add(const ShellIndexChangedEvent(0, ));
     } catch (e) {
       produceSideEffect(BaseCommand.failure(Failure(error: e)));
     } finally {
@@ -268,10 +301,10 @@ class CartBloc extends SideEffectBloc<CartEvent, CartState, BaseCommand> {
 
   OrderRequest _makeRequestData() {
     return OrderRequest(
-      address: _form.state.address.value,
-      email: _form.state.email.value,
-      phone: _form.state.phone.value,
-      displayName: _form.state.username.value,
+      address: state.address.value,
+      email: state.email.value,
+      phone: state.phone.value,
+      displayName: state.username.value,
       products: state.items.map((element) {
         return OrderProductRequest(
           productName: element.item.name,

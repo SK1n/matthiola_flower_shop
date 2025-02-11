@@ -25,104 +25,108 @@ class ProfileScreen extends StatelessWidget {
         return BlocSideEffectConsumer<ProfileBloc, ProfileState, BaseCommand>(
           sideEffectListener: _profileSideEffectListener,
           builder: (context, profileState) {
-            return Scaffold(
-              appBar: AppBar(
-                title: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.person,
-                        color: context.colorScheme.primary,
-                      ),
-                    ),
-                    Text(context.t.home.profile),
-                  ],
-                ),
-              ),
-              body: state.isAnonymous
-                  ? SafeArea(child: _buildAnonymous(context))
-                  : SafeArea(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Gap(10),
-                          Center(
-                            child: CircleAvatar(
-                              radius: 40,
+            return state.isAnonymous
+                ? _buildAnonymous(context)
+                : CustomScrollView(
+                    slivers: [
+                      SliverAppBar(
+                        title: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8),
                               child: Icon(
                                 Icons.person,
                                 color: context.colorScheme.primary,
                               ),
                             ),
-                          ),
-                          ListTile(
-                            leading: Icon(
+                            Text(context.t.home.profile),
+                          ],
+                        ),
+                      ),
+                      const SliverGap(10),
+                      SliverToBoxAdapter(
+                        child: Center(
+                          child: CircleAvatar(
+                            radius: 40,
+                            child: Icon(
                               Icons.person,
                               color: context.colorScheme.primary,
                             ),
-                            title: Text(state.user.displayName),
                           ),
-                          ListTile(
-                            leading: Icon(
-                              Icons.email,
-                              color: context.colorScheme.primary,
-                            ),
-                            title: Text(state.user.email),
-                          ),
-                          ListTile(
-                            leading: Icon(
-                              Icons.location_on,
-                              color: context.colorScheme.primary,
-                            ),
-                            title: Text(state.user.address),
-                          ),
-                          ListTile(
-                            leading: Icon(
-                              Icons.phone,
-                              color: context.colorScheme.primary,
-                            ),
-                            title: Text(state.user.phone),
-                          ),
-                          const Gap(10),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: OutlinedButton(
-                              onPressed: () {
-                                context
-                                    .read<HomeBloc>()
-                                    .add(const SignOutEvent());
-                              },
-                              style: OutlinedButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 40),
-                              ),
-                              child: Text(context.t.profile.logOut),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: OutlinedButton(
-                              onPressed: () {
-                                context
-                                    .read<ProfileBloc>()
-                                    .add(const OpenDeleteDialogEvent());
-                              },
-                              style: OutlinedButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 40),
-                                backgroundColor: context.colorScheme.error,
-                              ),
-                              child: Text(
-                                context.t.profile.deleteAccount,
-                                style: TextStyle(
-                                  color: context.colorScheme.onErrorContainer,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-            );
+                      SliverToBoxAdapter(
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.person,
+                            color: context.colorScheme.primary,
+                          ),
+                          title: Text(state.user.displayName),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.email,
+                            color: context.colorScheme.primary,
+                          ),
+                          title: Text(state.user.email),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.location_on,
+                            color: context.colorScheme.primary,
+                          ),
+                          title: Text(state.user.address),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.phone,
+                            color: context.colorScheme.primary,
+                          ),
+                          title: Text(state.user.phone),
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.all(8),
+                        sliver: SliverToBoxAdapter(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              context
+                                  .read<HomeBloc>()
+                                  .add(const SignOutEvent());
+                            },
+                            child: Text(context.t.profile.logOut),
+                          ),
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.all(8),
+                        sliver: SliverToBoxAdapter(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              context
+                                  .read<ProfileBloc>()
+                                  .add(const OpenDeleteDialogEvent());
+                            },
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: context.colorScheme.error,
+                            ),
+                            child: Text(
+                              context.t.profile.deleteAccount,
+                              style: TextStyle(
+                                color: context.colorScheme.onErrorContainer,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
           },
         );
       },
@@ -157,23 +161,26 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildAnonymous(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Icon(
+            Icons.person_outline,
+            size: 100,
+            color: context.colorScheme.primary,
+          ),
           const Gap(20),
           Text(
             context.t.generic.anonymous.profil,
-            style: context.textTheme.titleLarge,
+            style: context.textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
-          const Gap(20),
+          const Gap(30),
           FilledButton(
             onPressed: () {
               context.read<ProfileBloc>().add(const LoginEvent());
             },
-            style: FilledButton.styleFrom(
-              minimumSize: const Size(double.infinity, 40),
-            ),
             child: Text(context.t.generic.anonymous.button),
           ),
         ],

@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fuzzywuzzy/fuzzywuzzy.dart';
-import 'package:matthiola_flower_shop/core/constants/error_codes.dart';
+import 'package:matthiola_flower_shop/core/constants/app_constants.dart';
 import 'package:matthiola_flower_shop/core/constants/firestore_constants.dart';
 import 'package:matthiola_flower_shop/core/router/router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
-import 'package:matthiola_flower_shop/core/utils/failures/failure.dart';
-import 'package:matthiola_flower_shop/core/utils/flower_type.dart';
 import 'package:matthiola_flower_shop/domain/models/flower/flower_entity.dart';
 import 'package:matthiola_flower_shop/domain/models/user/user_entity.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_auth_repository.dart';
@@ -23,8 +21,7 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
   HomeBloc(
     this.repository,
     this.auth,
-  ) : super(const HomeState()) {
-    on<GetFlowerData>(_onGetFlowerData);
+  ) : super(HomeState()) {
     on<HomeFlowerTypeChanged>(_onFlowerTypeChanged);
     on<HomeOnSearchEvent>(_onHomeOnSearchEvent);
     on<HomeOnFlowerTappedEvent>(_onHomeOnFlowerTappedEvent);
@@ -33,64 +30,13 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     on<SignOutEvent>(_onSignOutEvent);
     on<DeleteAccountEvent>(_onDeleteAccountEvent);
     on<OnCartTappedEvent>(_onOnCartTappedEvent);
-    add(const GetFlowerData());
+    on<HomeSearchResultEvent>(_onHomeSearchResultEvent);
+    on<ControllerIndexChangedEvent>(_onControllerIndexChangedEvent);
     add(const _GetUserData());
   }
 
   final IRepository<FlowerEntity> repository;
   final IAuthRepository auth;
-  bool _canRefresh = true;
-
-  Future<void> _onGetFlowerData(
-    GetFlowerData event,
-    Emitter<HomeState> emit,
-  ) async {
-    emit(state.copyWith(isLoading: true));
-    if (!_canRefresh) {
-      await Future<void>.delayed(const Duration(milliseconds: 500));
-      return emit(state.copyWith(isLoading: false));
-    }
-    Timer(const Duration(seconds: 2), () {
-      _canRefresh = true;
-    });
-
-    _canRefresh = false;
-    try {
-      final result =
-          await repository.getList(FirestoreConstants.FLOWERS_COLLECTION);
-      if (result.isError()) {
-        return produceSideEffect(BaseCommand.failure(result.tryGetError()!));
-      }
-      final data = result.tryGetSuccess()!;
-      final stemData = data
-          .where(
-            (flower) => FlowerType.fromCode(flower.type) == FlowerType.thread,
-          )
-          .toList();
-      final potData = data
-          .where(
-            (flower) => FlowerType.fromCode(flower.type) == FlowerType.pot,
-          )
-          .toList();
-      final accessoriesData = data
-          .where(
-            (flower) =>
-                FlowerType.fromCode(flower.type) == FlowerType.accessory,
-          )
-          .toList();
-      emit(
-        state.copyWith(
-          stemData: stemData,
-          potData: potData,
-          accessoriesData: accessoriesData,
-        ),
-      );
-    } on Exception catch (e) {
-      produceSideEffect(BaseCommand.failure(Failure(error: e.toString())));
-    } finally {
-      emit(state.copyWith(isLoading: false));
-    }
-  }
 
   void _onFlowerTypeChanged(
     HomeFlowerTypeChanged event,
@@ -99,34 +45,29 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     emit(state.copyWith(choiceChipSelectedItem: event.index));
   }
 
-  void _onHomeOnSearchEvent(
+  Future<void> _onHomeOnSearchEvent(
     HomeOnSearchEvent event,
     Emitter<HomeState> emit,
-  ) {
+  ) async {
     final query = event.query;
-    emit(state.copyWith(query: query));
     if (query.isEmpty) {
-      return emit(state.copyWith(filteredData: []));
+      add(const HomeSearchResultEvent([], ''));
+      return;
     }
-    final data = [
-      ...state.potData,
-      ...state.stemData,
-      ...state.accessoriesData,
-    ];
-    final queryData = extractAllSorted<FlowerEntity>(
-      query: query,
-      choices: data,
-      getter: (flower) => flower.name,
-      cutoff: 50,
-    ).toList();
-    final dataToEmit = queryData.map((element) => element.choice).toList();
-    if (dataToEmit.isEmpty) {
-      emit(state.copyWith(filteredData: []));
-      return produceSideEffect(
-        BaseCommand.failure(const Failure(code: ErrorCodes.emptySearch)),
-      );
+    final result = await repository.search(query);
+    if (result.isError()) {
+      produceSideEffect(BaseCommand.failure(result.tryGetError()!));
+      return;
     }
-    emit(state.copyWith(filteredData: dataToEmit));
+    final flowers = result.tryGetSuccess()!;
+    add(HomeSearchResultEvent(flowers, query));
+  }
+
+  void _onHomeSearchResultEvent(
+    HomeSearchResultEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(state.copyWith(filteredData: event.flowers, query: event.query));
   }
 
   void _onHomeOnFlowerTappedEvent(
@@ -166,11 +107,12 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     );
   }
 
-  void _onSignOutEvent(
+  Future<void> _onSignOutEvent(
     SignOutEvent event,
     Emitter<HomeState> emit,
-  ) {
-    unawaited(auth.signOut());
+  ) async {
+    // unawaited(auth.signOut());
+    await auth.loginAnonymous();
     produceSideEffect(BaseCommand.go(const LoginRoute()));
   }
 
@@ -193,5 +135,12 @@ class HomeBloc extends SideEffectBloc<HomeEvent, HomeState, BaseCommand> {
     Emitter<HomeState> emit,
   ) {
     produceSideEffect(BaseCommand.go(const CartRoute()));
+  }
+
+  void _onControllerIndexChangedEvent(
+    ControllerIndexChangedEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(state.copyWith(controllerIndex: event.index));
   }
 }

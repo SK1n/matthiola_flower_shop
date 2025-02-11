@@ -10,6 +10,8 @@ List<RouteBase> get $appRoutes => [
       $splashRoute,
       $loginRoute,
       $homeScaffoldRoute,
+      $flowerDetailsRoute,
+      $cartRoute,
     ];
 
 RouteBase get $splashRoute => GoRouteData.$route(
@@ -102,17 +104,32 @@ extension $ForgotPasswordRouteExtension on ForgotPasswordRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $homeScaffoldRoute => GoRouteData.$route(
-      path: '/home',
+RouteBase get $homeScaffoldRoute => StatefulShellRouteData.$route(
       factory: $HomeScaffoldRouteExtension._fromState,
-      routes: [
-        GoRouteData.$route(
-          path: 'details/:id',
-          factory: $FlowerDetailsRouteExtension._fromState,
+      branches: [
+        StatefulShellBranchData.$branch(
+          routes: [
+            GoRouteData.$route(
+              path: '/home',
+              factory: $HomeRouteExtension._fromState,
+            ),
+          ],
         ),
-        GoRouteData.$route(
-          path: 'cart',
-          factory: $CartRouteExtension._fromState,
+        StatefulShellBranchData.$branch(
+          routes: [
+            GoRouteData.$route(
+              path: '/favorite',
+              factory: $FavoriteRouteExtension._fromState,
+            ),
+          ],
+        ),
+        StatefulShellBranchData.$branch(
+          routes: [
+            GoRouteData.$route(
+              path: '/profile',
+              factory: $ProfileRouteExtension._fromState,
+            ),
+          ],
         ),
       ],
     );
@@ -120,6 +137,10 @@ RouteBase get $homeScaffoldRoute => GoRouteData.$route(
 extension $HomeScaffoldRouteExtension on HomeScaffoldRoute {
   static HomeScaffoldRoute _fromState(GoRouterState state) =>
       const HomeScaffoldRoute();
+}
+
+extension $HomeRouteExtension on HomeRoute {
+  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
 
   String get location => GoRouteData.$location(
         '/home',
@@ -135,14 +156,11 @@ extension $HomeScaffoldRouteExtension on HomeScaffoldRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $FlowerDetailsRouteExtension on FlowerDetailsRoute {
-  static FlowerDetailsRoute _fromState(GoRouterState state) =>
-      FlowerDetailsRoute(
-        state.pathParameters['id']!,
-      );
+extension $FavoriteRouteExtension on FavoriteRoute {
+  static FavoriteRoute _fromState(GoRouterState state) => const FavoriteRoute();
 
   String get location => GoRouteData.$location(
-        '/home/details/${Uri.encodeComponent(id)}',
+        '/favorite',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -155,11 +173,58 @@ extension $FlowerDetailsRouteExtension on FlowerDetailsRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
+extension $ProfileRouteExtension on ProfileRoute {
+  static ProfileRoute _fromState(GoRouterState state) => const ProfileRoute();
+
+  String get location => GoRouteData.$location(
+        '/profile',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $flowerDetailsRoute => GoRouteData.$route(
+      path: '/details/:id',
+      factory: $FlowerDetailsRouteExtension._fromState,
+    );
+
+extension $FlowerDetailsRouteExtension on FlowerDetailsRoute {
+  static FlowerDetailsRoute _fromState(GoRouterState state) =>
+      FlowerDetailsRoute(
+        state.pathParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/details/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $cartRoute => GoRouteData.$route(
+      path: '/cart',
+      factory: $CartRouteExtension._fromState,
+    );
+
 extension $CartRouteExtension on CartRoute {
   static CartRoute _fromState(GoRouterState state) => const CartRoute();
 
   String get location => GoRouteData.$location(
-        '/home/cart',
+        '/cart',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -143,7 +143,8 @@ class _TranslationsGenericEn implements _TranslationsGenericRo {
 
 	// Translations
 	@override String get unknownException => 'An unknown exception occurred.';
-	@override String get search => 'Search by name';
+	@override String get search => 'Search...';
+	@override String get noResults => 'No results found';
 	@override String get title => 'Matthiola';
 	@override String get or => 'Or';
 	@override String get required => 'This field is required';
@@ -173,6 +174,8 @@ class _TranslationsHomeEn implements _TranslationsHomeRo {
 	@override String inStock({required Object value}) => '${value} items in stock';
 	@override String get cantRefreshNow => 'The list can\'t be refreshed right now. Please try again shortly.';
 	@override String get welcomeBack => 'Welcome back,';
+	@override String get outOfStock => 'This product is out of stock.';
+	@override String get poweredByAlgolia => 'Powered by Algolia';
 }
 
 // Path: profile
@@ -218,9 +221,10 @@ class _TranslationsSignInEn implements _TranslationsSignInRo {
 	@override String get emailHint => 'E.g. yourname@gmail.com';
 	@override String get emailPrefix => 'Email';
 	@override String get passwordLabel => 'Enter your password';
+	@override String get reset => 'Forgot password?';
 	@override String get noAccount => 'Don\'t have an account yet?';
 	@override String get register => 'Register';
-	@override String get signIn => 'Sign In';
+	@override String get signIn => 'Log in';
 }
 
 // Path: sign_up

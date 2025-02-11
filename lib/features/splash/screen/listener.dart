@@ -13,7 +13,7 @@ void _sideEffectListener(BuildContext context, BaseCommand command) {
         case LoginRoute:
           (route as LoginRoute).go(context);
         case HomeScaffoldRoute:
-          (route as HomeScaffoldRoute).go(context);
+          GoRouter.of(context).pushReplacement(const HomeRoute().location);
       }
     },
   );

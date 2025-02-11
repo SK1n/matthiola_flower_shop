@@ -12,5 +12,7 @@
     "lastProducts": "$n left",
     "inStock": "${value} items in stock",
     "cantRefreshNow": "The list can't be refreshed right now. Please try again shortly.",
-    "welcomeBack": "Welcome back,"
+    "welcomeBack": "Welcome back,",
+    "outOfStock": "This product is out of stock.",
+    "poweredByAlgolia": "Powered by Algolia"
 }

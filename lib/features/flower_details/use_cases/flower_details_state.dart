@@ -2,7 +2,7 @@ part of 'flower_details_bloc.dart';
 
 class FlowerDetailsState extends Equatable {
   const FlowerDetailsState({
-    this.isLoading = false,
+    this.isLoading = true,
     this.quantity = 0,
     this.item = FlowerEntity.empty,
   });

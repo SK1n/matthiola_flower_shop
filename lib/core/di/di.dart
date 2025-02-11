@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:matthiola_flower_shop/data/algolia_search_service.dart';
 import 'package:matthiola_flower_shop/data/repositories/auth_repository.dart';
 import 'package:matthiola_flower_shop/data/repositories/flower_repository.dart';
 import 'package:matthiola_flower_shop/data/repositories/order_repository.dart';
@@ -12,7 +13,6 @@ import 'package:matthiola_flower_shop/domain/repositories/i_auth_repository.dart
 import 'package:matthiola_flower_shop/domain/repositories/i_repository.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_shared_prefs_repository.dart';
 import 'package:matthiola_flower_shop/features/cart/use_cases/bloc/cart_bloc.dart';
-import 'package:matthiola_flower_shop/features/cart/use_cases/cubit/cart_form_cubit.dart';
 import 'package:matthiola_flower_shop/features/create_account/use_cases/bloc/create_account_bloc.dart';
 import 'package:matthiola_flower_shop/features/create_account/use_cases/cubit/create_account_form_cubit.dart';
 import 'package:matthiola_flower_shop/features/favorites/use_cases/favorite_bloc.dart';
@@ -21,7 +21,6 @@ import 'package:matthiola_flower_shop/features/forgot_password/use_cases/bloc/fo
 import 'package:matthiola_flower_shop/features/home/use_cases/home_bloc.dart';
 import 'package:matthiola_flower_shop/features/home_scaffold/use_cases/home_scaffold_bloc.dart';
 import 'package:matthiola_flower_shop/features/login/use_cases/bloc/login_bloc.dart';
-import 'package:matthiola_flower_shop/features/login/use_cases/cubit/login_form_cubit.dart';
 import 'package:matthiola_flower_shop/features/profile/use_cases/profile_bloc.dart';
 import 'package:matthiola_flower_shop/features/splash/use_cases/bloc/splash_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,7 +40,13 @@ void _configurePackages() {
     ..isReady<SharedPreferences>();
 }
 
-void _configureServices() {}
+void _configureServices() {
+  getIt.registerLazySingletonAsync<AlgoliaSearchService>(() async {
+    final service = AlgoliaSearchService();
+    await service.initializeClient();
+    return service;
+  });
+}
 
 void _configureRepositories() {
   getIt
@@ -52,9 +57,11 @@ void _configureRepositories() {
         getIt<FirebaseFunctions>(),
       ),
     )
-    ..registerLazySingleton<IRepository<FlowerEntity>>(
-      () => FlowerRepository(
+    ..registerLazySingletonAsync<IRepository<FlowerEntity>>(
+      () async => FlowerRepository(
         getIt<FirebaseFirestore>(),
+        await getIt.getAsync<
+            AlgoliaSearchService>(), // Ensure AlgoliaSearchService is ready
       ),
     )
     ..registerLazySingleton<ISharedPrefsRepository>(
@@ -70,14 +77,9 @@ void _configureRepositories() {
 }
 
 void _confitureCubits() {
-  getIt
-    ..registerLazySingleton<LoginFormCubit>(LoginFormCubit.new)
-    ..registerLazySingleton<CreateAccountFormCubit>(CreateAccountFormCubit.new)
-    ..registerLazySingleton<CartFormCubit>(
-      () => CartFormCubit(
-        getIt<IAuthRepository>(),
-      ),
-    );
+  getIt.registerLazySingleton<CreateAccountFormCubit>(
+    CreateAccountFormCubit.new,
+  );
 }
 
 void _configureBlocs() {
@@ -90,7 +92,6 @@ void _configureBlocs() {
     ..registerLazySingleton(
       () => LoginBloc(
         getIt<IAuthRepository>(),
-        getIt<LoginFormCubit>(),
       ),
     )
     ..registerLazySingleton<CreateAccountBloc>(
@@ -105,40 +106,38 @@ void _configureBlocs() {
       ),
     )
     ..registerLazySingleton<HomeScaffoldBloc>(HomeScaffoldBloc.new)
-    ..registerLazySingleton<HomeBloc>(
-      () => HomeBloc(
-        getIt<IRepository<FlowerEntity>>(),
+    ..registerLazySingletonAsync<HomeBloc>(
+      () async => HomeBloc(
+        await getIt.getAsync<IRepository<FlowerEntity>>(),
         getIt<IAuthRepository>(),
       ),
     )
-    ..registerLazySingleton<FlowerDetailsBloc>(
-      () => FlowerDetailsBloc(
-        getIt<IRepository<FlowerEntity>>(),
-        getIt<HomeBloc>(),
+    ..registerLazySingletonAsync<FlowerDetailsBloc>(
+      () async => FlowerDetailsBloc(
+        await getIt.getAsync<IRepository<FlowerEntity>>(),
       ),
     )
-    ..registerLazySingleton<CartBloc>(
-      () => CartBloc(
+    ..registerLazySingletonAsync<CartBloc>(
+      () async => CartBloc(
         getIt<ISharedPrefsRepository>(),
-        getIt<CartFormCubit>(),
         getIt<IRepository<OrderRequest>>(),
-        getIt<HomeBloc>(),
-        getIt<HomeScaffoldBloc>(),
+        await getIt.getAsync<HomeBloc>(),
       ),
     )
-    ..registerLazySingleton<FavoriteBloc>(
-      () => FavoriteBloc(
+    ..registerLazySingletonAsync<FavoriteBloc>(
+      () async => FavoriteBloc(
         getIt<ISharedPrefsRepository>(),
-        getIt<HomeBloc>(),
+        await getIt.getAsync<HomeBloc>(),
       ),
     )
     ..registerLazySingleton<ProfileBloc>(ProfileBloc.new);
 }
 
-void configureDi() {
+Future<void> configureDi() async {
   _configurePackages();
   _configureServices();
   _configureRepositories();
   _confitureCubits();
   _configureBlocs();
+  await getIt.allReady();
 }

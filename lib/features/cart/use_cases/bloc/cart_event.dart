@@ -63,6 +63,38 @@ class CartHasErrorEvent extends CartEvent {
   List<Object> get props => [error];
 }
 
+class EmailChangedEvent extends CartEvent {
+  const EmailChangedEvent(this.email);
+  final String email;
+
+  @override
+  List<Object> get props => [email];
+}
+
+class UsernameChangedEvent extends CartEvent {
+  const UsernameChangedEvent(this.username);
+  final String username;
+
+  @override
+  List<Object> get props => [username];
+}
+
+class AddressChangedEvent extends CartEvent {
+  const AddressChangedEvent(this.address);
+  final String address;
+
+  @override
+  List<Object> get props => [address];
+}
+
+class PhoneChangedEvent extends CartEvent {
+  const PhoneChangedEvent(this.phone);
+  final String phone;
+
+  @override
+  List<Object> get props => [phone];
+}
+
 class SubmitCartEvent extends CartEvent {
   const SubmitCartEvent();
 }

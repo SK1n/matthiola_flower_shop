@@ -19,89 +19,87 @@ class FavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSideEffectListener<FavoriteBloc, BaseCommand>(
-      listener: _sideEffectListener,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Icon(
-                  Icons.favorite,
-                  color: context.colorScheme.primary,
-                ),
-              ),
-              Text(context.t.home.favorite),
-            ],
-          ),
-        ),
-        body: BlocBuilder<FavoriteBloc, FavoriteState>(
-          builder: (context, state) {
-            if (state.isAnonymous) {
-              return _buildAnonymous(context);
-            }
-            if (state.items.isEmpty) {
-              return NotFoundWidget(
-                message: context.t.home.emptyFavorite,
-              );
-            }
-            return CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                  sliver: SliverGrid.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 20,
-                      childAspectRatio: 0.7,
-                      mainAxisSpacing: 10,
+    return BlocSideEffectConsumer<FavoriteBloc, FavoriteState, BaseCommand>(
+      sideEffectListener: _sideEffectListener,
+      builder: (context, state) {
+        if (state.isAnonymous) {
+          return _buildAnonymous(context);
+        }
+        if (state.items.isEmpty) {
+          return NotFoundWidget(
+            message: context.t.home.emptyFavorite,
+          );
+        }
+        return CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Icon(
+                      Icons.favorite,
+                      color: context.colorScheme.primary,
                     ),
-                    itemCount: state.items.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          context
-                              .read<FavoriteBloc>()
-                              .add(FavoritePressedEvent(state.items[index].id));
-                        },
-                        child: FlowerCard(
-                          flower: state.items[index],
-                          showBanner: true,
-                        ),
-                      );
-                    },
                   ),
+                  Text(context.t.home.favorite),
+                ],
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+              sliver: SliverGrid.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 20,
+                  childAspectRatio: 0.7,
+                  mainAxisSpacing: 10,
                 ),
-              ],
-            );
-          },
-        ),
-      ),
+                itemCount: state.items.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      context
+                          .read<FavoriteBloc>()
+                          .add(FavoritePressedEvent(state.items[index].id));
+                    },
+                    child: FlowerCard(
+                      flower: state.items[index],
+                      showBanner: true,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
 Widget _buildAnonymous(BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.all(8),
+    padding: const EdgeInsets.all(16),
     child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Icon(
+          Icons.favorite_outline,
+          size: 100,
+          color: context.colorScheme.primary,
+        ),
         const Gap(20),
         Text(
           context.t.generic.anonymous.favorites,
           style: context.textTheme.titleLarge,
           textAlign: TextAlign.center,
         ),
-        const Gap(20),
+        const Gap(30),
         FilledButton(
           onPressed: () {
             context.read<FavoriteBloc>().add(const LoginEvent());
           },
-          style: FilledButton.styleFrom(
-            minimumSize: const Size(double.infinity, 40),
-          ),
           child: Text(context.t.generic.anonymous.button),
         ),
       ],

@@ -1,10 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:matthiola_flower_shop/core/router/router.dart';
+import 'package:formz/formz.dart';
+import 'package:go_router/go_router.dart';
 import 'package:matthiola_flower_shop/core/utils/base_command.dart';
 import 'package:matthiola_flower_shop/core/utils/failures/failure.dart';
+import 'package:matthiola_flower_shop/core/validators/email_validator.dart';
+import 'package:matthiola_flower_shop/core/validators/password_validator.dart';
 import 'package:matthiola_flower_shop/domain/repositories/i_auth_repository.dart';
-import 'package:matthiola_flower_shop/features/login/use_cases/cubit/login_form_cubit.dart';
 import 'package:side_effect_cubit/side_effect_cubit.dart';
 
 part 'login_event.dart';
@@ -13,38 +15,48 @@ part 'login_state.dart';
 class LoginBloc extends SideEffectBloc<LoginEvent, LoginState, BaseCommand> {
   LoginBloc(
     this.auth,
-    this.form,
   ) : super(const LoginState()) {
     on<LoginRequestedEvent>(_onLoginRequestEvent);
-    on<LoginCreateAccountTappedEvent>(_onLoginCreateAccountTappedEvent);
-    on<LoginForgotPasswordTappedEvent>(_onLoginForgotPasswordTappedEvent);
-    on<_SubscribeToForm>(_onSubscribeToForm);
-    add(const _SubscribeToForm());
+    on<EmailChangedEvent>(_onEmailChangedEvent);
+    on<PasswordChangedEvent>(_onPasswordChangedEvent);
+    on<TogglePasswordVisibilityEvent>(_onTogglePasswordVisibilityEvent);
+    on<RedirectEvent>(_onRedirectEvent);
   }
 
   final IAuthRepository auth;
-  final LoginFormCubit form;
 
-  Future<void> _onSubscribeToForm(
-    _SubscribeToForm event,
+  void _onEmailChangedEvent(
+    EmailChangedEvent event,
     Emitter<LoginState> emit,
-  ) async {
-    await for (final data in form.stream) {
-      form.isValid();
-      emit(state.copyWith(formIsValid: data.formIsValid));
-    }
+  ) {
+    final value = EmailValidator.dirty(event.email);
+    emit(state.copyWith(email: value));
+  }
+
+  void _onPasswordChangedEvent(
+    PasswordChangedEvent event,
+    Emitter<LoginState> emit,
+  ) {
+    final value = PasswordValidator.dirty((event.password, event.password));
+    emit(state.copyWith(password: value));
+  }
+
+  void _onTogglePasswordVisibilityEvent(
+    TogglePasswordVisibilityEvent event,
+    Emitter<LoginState> emit,
+  ) {
+    emit(state.copyWith(showPassword: !state.showPassword));
   }
 
   Future<void> _onLoginRequestEvent(
     LoginRequestedEvent event,
     Emitter<LoginState> emit,
   ) async {
-    if (!state.formIsValid) return;
     emit(state.copyWith(isLoading: true));
     try {
       final result = await auth.login(
-        form.state.email.value,
-        form.state.password.value.$1,
+        state.email.value,
+        state.password.value.$1,
       );
       if (result.isError()) {
         return produceSideEffect(BaseCommand.failure(result.tryGetError()!));
@@ -57,17 +69,10 @@ class LoginBloc extends SideEffectBloc<LoginEvent, LoginState, BaseCommand> {
     }
   }
 
-  Future<void> _onLoginCreateAccountTappedEvent(
-    LoginCreateAccountTappedEvent event,
-    Emitter<LoginState> emit,
-  ) async {
-    produceSideEffect(BaseCommand.go(const CreateAccountRoute()));
-  }
-
-  void _onLoginForgotPasswordTappedEvent(
-    LoginForgotPasswordTappedEvent event,
+  void _onRedirectEvent(
+    RedirectEvent event,
     Emitter<LoginState> emit,
   ) {
-    produceSideEffect(BaseCommand.go(const ForgotPasswordRoute()));
+    produceSideEffect(BaseCommand.go(event.data));
   }
 }

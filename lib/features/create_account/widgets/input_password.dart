@@ -15,7 +15,7 @@ class _InputPassword extends StatelessWidget {
           onChanged: passwordChanged,
           initialValue: state.password.value.$1,
           obscureText: !state.showPassword,
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.visiblePassword,
           decoration: InputDecoration(
             labelText: context.t.sign_up.passwordLabel,
             suffixIcon: GestureDetector(

@@ -7,10 +7,11 @@ sealed class HomeScaffoldEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class HomeScaffoldOnDestinationSelectedEvent extends HomeScaffoldEvent {
-  const HomeScaffoldOnDestinationSelectedEvent(this.index);
+class ShellIndexChangedEvent extends HomeScaffoldEvent {
+  const ShellIndexChangedEvent(this.index, this.navigationShell);
   final int index;
+  final StatefulNavigationShell navigationShell;
 
   @override
-  List<Object> get props => [index];
+  List<Object> get props => [index, navigationShell];
 }

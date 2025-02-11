@@ -149,7 +149,8 @@ class _TranslationsGenericRo {
 
 	// Translations
 	String get unknownException => 'A apărut o eroare necunoscută.';
-	String get search => 'Căutați după nume';
+	String get search => 'Căutați...';
+	String get noResults => 'Nu s-au găsit rezultate';
 	String get title => 'Matthiola';
 	String get or => 'Sau';
 	String get required => 'Acest câmp este obligatoriu';
@@ -179,6 +180,8 @@ class _TranslationsHomeRo {
 	String inStock({required Object value}) => '${value} bucăți în stoc.';
 	String get cantRefreshNow => 'Lista nu poate fi reîmprospătată acum. Încercați din nou în scurt timp.';
 	String get welcomeBack => 'Bine ați revenit,';
+	String get outOfStock => 'Acest produs nu mai este in stoc.';
+	String get poweredByAlgolia => 'Powered by Algolia';
 }
 
 // Path: profile
@@ -227,6 +230,7 @@ class _TranslationsSignInRo {
 	String get noAccount => 'Nu aveți încă un cont?';
 	String get register => 'Înregistrați-vă';
 	String get signIn => 'Intră în cont';
+	String get reset => 'Ați uitat parola?';
 }
 
 // Path: sign_up
